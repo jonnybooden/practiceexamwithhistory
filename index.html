@@ -1,4 +1,238 @@
 <body>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<h1>Welcome to the 2025 Honors Classes Exam Review!</h1>
+<p>This was created by Jonny Booden, Caleb Ferguson, Josh Fernandez, Grady Kuebler, Luke Christner, and Owen Keller.<br>
+<br><br>These quizzes should all take more than an hour to complete.<br>As of late, only the bio practice exam is ready, but we're working on the others as you're reading this. :)</p>
+
+<a href="math.html"><div style="left: 25%" class="course" id="math"><span class="coursespan">Math</span></div></a>
+<a href="english.html"><div style="left: 75%" class="course" id="english"><span class="coursespan">English</span></div></a>
+<a href="biopreface.html"><div style="left: 25%; margin-top: 10vh;" class="course" id="biology"><span class="coursespan">Biology</span></div></a>
+<a href="history.html"><div style="left: 75%; margin-top: 10vh;" class="course" id="history"><span class="coursespan">History</span></div></a>
+</body>
+<style>
+.coursespan {
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  font-size: 5vh;
+}
+.course {
+  width: 20vh;
+  height: 7vh;
+  background-color: black;
+  border-radius: 1vh;
+  text-align: center;
+  color: white;
+  position: absolute;
+  transform: translate(-50%, 0%);
+}
+h1 {
+  text-align: center;
+}
+p {
+  text-align: center;
+}
+</style>
+<script>
+/*window.addEventListener(resize, everyTimeThePageResizes); 
+function everyTimeThePageResizes() {
+  for (i = 0; i < document.getElementsByClassName("course").length; i++) {
+    document.getElementsByClassName("course")[i].style.
+  }
+}*/
+</script>
+<body>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<p id="questioncounter">Question 1:</p>
+<h1 id="question">What is this question reading?</h1>
+<div class="hidden" id="multiplechoice">
+<form>
+<input name="answer" type="radio" id="answerA"><label id="labelA" for="answerA">Answer A</label>
+<br><input name="answer" type="radio" id="answerB"><label id="labelB" for="answerB">Answer B</label>
+<br><input name="answer" type="radio" id="answerC"><label id="labelC" for="answerC">Answer C</label>
+<br><input name="answer" type="radio" id="answerD"><label id="labelD" for="answerD">Answer D</label>
+</form>
+</div>
+<div class="hidden" id="shortanswer">
+<textarea id="answerblank"></textarea>
+<div class="hidden" id="a">
+<span>Correct Answer:<br>
+</span>
+<span id="aa"></span>
+<div onclick="makecorrect()" id="con">Press if Correct</div>
+</div>
+</div>
+<div id="next" onclick="check()">Check</div>
+<a href="https://changeoftyde.github.io/practiceexam/" target="_blank"><div id="return">Return to Home</div></a>
+</body>
+<body>
+<h1>A Few Quick Things:</h1>
+<p>This practice exam is just over 200 questions and may take over an hour to complete.
+<br>DO NOT CLOSE THIS TAB, OR YOUR PROGRESS WILL BE RESET. :(
+<br><br>Make sure you download the PDF below, you will need it for the quiz. (split screen)
+<br><br>If I made any mistakes, please let me know. I know there are one or two glitches you may encounter but the only thing I am concerned about is whether or not my information is accurate.
+<br><br>And now, the best part...
+<br>You'll get a score at the end!
+<br>(Just make sure you don't click the 'Press if Correct' button more than one time or your score will mess up)
+<br><br>Lastly, on the essay questions, DO NOT FORGET TO PRESS THE BUTTON (once per question, or like I said, it will mess up your score) IF YOU GOT IT RIGHT. IT WILL AUTOMATICALLY COUNT IT WRONG.
+<br><br>By the way, if you want to use this site on your phone, it works there too. :)</p>
+
+<a href="biology.html"><div id="start">Start</div></a>
+<a href="diagramsbio.pdf" download><div id="download">Download PDF</div></a>
+</body>
+<style>
+  body {
+    text-align: center;
+  }
+  #download {
+    bottom: 12vh;
+  }
+  div {
+  background-color: black;
+  width: 40vh;
+  height: 6vh;
+  text-align: center;
+  color: white;
+  border-radius: 2vh;
+  padding: 1vh;
+  font-size: 5vh;
+  left: 50%;
+  position: fixed;
+  transform: translate(-50%, 0%);
+  bottom: 2vh;
+  }
+</style>
+body>
+<p><br>You're done!
+<br><br>While you're here, check out <a href="https://changeoftyde.github.io/projector/">Projector,</a> a better way to study, and my <a href="https://changeoftyde.github.io/gpacalculator/">GPA Calculator.</a>
+<br><br>Well, here's how you did:</p>
+
+<div id="scorestuff">
+<h1 id="scoreheading">Your Score is: <br><span id="score"></span></h1>
+<span id="o"><br></span>
+
+</div>
+<a href="index.html"><div id="backtohome">Back to Home</div></a>
+</body>
+<style>
+body {
+  text-align: center;
+}
+#scorestuff {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+}
+#scoreheading {
+  text-align: center;
+  margin-top: 2vh;
+}
+#score {
+  font-size: 10vh;
+}
+#backtohome {
+  background-color: black;
+  width: 30vh;
+  height: 6vh;
+  text-align: center;
+  color: white;
+  border-radius: 2vh;
+  padding: 1vh;
+  font-size: 5vh;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 0%);
+  bottom: 2vh;
+}
+#o {
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5vh;
+  text-align: center;
+  position: absolute;
+}
+</style>
+<script>
+nc = parseInt(localStorage.getItem("nc"));
+tq = parseInt(localStorage.getItem("tq"));
+document.getElementById("score").innerHTML = Math.round(100 * (nc / tq)) + "%";
+pct = Math.round(100 * (nc / tq));
+if (pct > 89) {
+  document.getElementById("score").style.color = "green";
+} else if (pct > 79) {
+  document.getElementById("score").style.color = "gold";
+} else if (pct > 69) {
+  document.getElementById("score").style.color = "orange";
+} else if (pct > 59) {
+  document.getElementById("score").style.color = "#ff5b00";
+} else {
+  document.getElementById("score").style.color = "red";
+}
+document.getElementById("o").textContent = "(" + nc + "/" + tq + ")";
+</script>
+<style>
+#con {
+  background-color: black;
+  color: white;
+  border-radius: 1vh;
+  position: absolute;
+  padding: 1vh;
+  margin-top: 2vh;
+  margin-left: -0.2vh;
+}
+#aa {
+  font-weight: bold;
+}
+#a {
+  position: absolute;
+  font-size: 2.5vh;
+  font-family: "Times New Roman";
+}
+#answerblank {
+  height: 30vh;
+  position: absolute;
+  font-size: 2.5vh;
+  font-family: "Times New Roman";
+}
+#return {
+  text-align: center;
+  font-size: 5vh;
+  border-radius: 1vh;
+  outline: 0.6vh solid black;
+  width: 35vh;
+  color: black;
+  height: 6vh;
+  left: 2vh;
+  bottom: 2vh;
+  position: absolute;
+  background-color: white;
+  position: fixed;
+}
+#next {
+  text-align: center;
+  font-size: 5vh;
+  border-radius: 1vh;
+  outline: 0.6vh solid black;
+  width: 15vh;
+  height: 6vh;
+  right: 2vh;
+  bottom: 2vh;
+  position: absolute;
+  background-color: white;
+  position: fixed;
+}
+#question {
+  margin-top: -2vh;
+}
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+</style>
+<body>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <p id="questioncounter">Question 1:</p>
 <h1 id="question">What is this question reading?</h1>
