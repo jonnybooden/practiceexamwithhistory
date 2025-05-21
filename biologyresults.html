@@ -1,0 +1,69 @@
+<body>
+<p><br>You're done!
+<br><br>While you're here, check out <a href="https://changeoftyde.github.io/projector/">Projector,</a> a better way to study, and my <a href="https://changeoftyde.github.io/gpacalculator/">GPA Calculator.</a>
+<br><br>Well, here's how you did:</p>
+
+<div id="scorestuff">
+<h1 id="scoreheading">Your Score is: <br><span id="score"></span></h1>
+<span id="o"><br></span>
+
+</div>
+<a href="index.html"><div id="backtohome">Back to Home</div></a>
+</body>
+<style>
+body {
+  text-align: center;
+}
+#scorestuff {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+}
+#scoreheading {
+  text-align: center;
+  margin-top: 2vh;
+}
+#score {
+  font-size: 10vh;
+}
+#backtohome {
+  background-color: black;
+  width: 30vh;
+  height: 6vh;
+  text-align: center;
+  color: white;
+  border-radius: 2vh;
+  padding: 1vh;
+  font-size: 5vh;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 0%);
+  bottom: 2vh;
+}
+#o {
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5vh;
+  text-align: center;
+  position: absolute;
+}
+</style>
+<script>
+nc = parseInt(localStorage.getItem("nc"));
+tq = parseInt(localStorage.getItem("tq"));
+document.getElementById("score").innerHTML = Math.round(100 * (nc / tq)) + "%";
+pct = Math.round(100 * (nc / tq));
+if (pct > 89) {
+  document.getElementById("score").style.color = "green";
+} else if (pct > 79) {
+  document.getElementById("score").style.color = "gold";
+} else if (pct > 69) {
+  document.getElementById("score").style.color = "orange";
+} else if (pct > 59) {
+  document.getElementById("score").style.color = "#ff5b00";
+} else {
+  document.getElementById("score").style.color = "red";
+}
+document.getElementById("o").textContent = "(" + nc + "/" + tq + ")";
+</script>
