@@ -40,18 +40,6 @@
             background-color: white;
             position: fixed;
         }
-        #next {
-            text-align: center;
-            font-size: 5vh;
-            border-radius: 1vh;
-            outline: 0.6vh solid black;
-            width: 15vh;
-            height: 6vh;
-            right: 2vh;
-            bottom: 2vh;
-            background-color: white;
-            position: fixed;
-        }
         #question {
             margin-top: -2vh;
         }
@@ -109,7 +97,6 @@
             <span id="aa"></span>
         </div>
     </div>
-    <div id="next" onclick="check()">Check</div>
     <a href="https://jonnybooden.github.io/practiceexamwithhistory/" target="_blank"><div id="return">Return to Home</div></a>
     <a href="diagram1.html"><div class="course hidden" id="diagramButton"><span class="coursespan">Diagram A</span></div></a>
 
@@ -168,7 +155,7 @@
 
         function startOfGame() {
             document.getElementById("question").innerHTML = questions[cq];
-            updateButtonVisibility();
+            updateDiagramButtonVisibility();
             if (questiontypes[cq] == 1) {
                 document.getElementById("multiplechoice").classList.remove("hidden");
                 document.getElementById("shortanswer").classList.add("hidden");
@@ -182,16 +169,12 @@
             }
         }
 
-        function updateButtonVisibility() {
-            const diagramButton = document.getElementById("diagramButton");
-            const nextButton = document.getElementById("next");
-            // Show diagram button and hide next button for question 14 (cq == 13)
+        function updateDiagramButtonVisibility() {
+            // Show diagram button only for question 13 (cq == 12)
             if (cq == 12) {
-                diagramButton.classList.remove("hidden");
-                nextButton.classList.add("hidden");
+                document.getElementById("diagramButton").classList.remove("hidden");
             } else {
-                diagramButton.classList.add("hidden");
-                nextButton.classList.remove("hidden");
+                document.getElementById("diagramButton").classList.add("hidden");
             }
         }
 
@@ -251,10 +234,7 @@
                     document.getElementById("shortanswer").appendChild(feedback);
                 }
             }
-            if (checked) {
-                document.getElementById("next").innerHTML = "Next";
-                document.getElementById("next").setAttribute("onclick", "next()");
-            } else {
+            if (!checked) {
                 alert("Please submit an answer.");
             }
         }
@@ -262,12 +242,12 @@
         function next() {
             window.scrollTo(0, 0);
             cq++;
+            updateDiagramButtonVisibility();
             if (cq == questions.length) {
                 endgame();
             } else {
                 document.getElementById("questioncounter").innerHTML = "Question " + (cq + 1).toString() + ":";
                 document.getElementById("question").innerHTML = questions[cq];
-                updateButtonVisibility();
                 if (questiontypes[cq] == 1) {
                     document.getElementById("shortanswer").classList.add("hidden");
                     document.getElementById("multiplechoice").classList.remove("hidden");
@@ -285,8 +265,6 @@
                 }
                 let feedback = document.getElementById("feedback");
                 if (feedback) feedback.remove();
-                document.getElementById("next").innerHTML = "Check";
-                document.getElementById("next").setAttribute("onclick", `check()`);
                 resizeall();
             }
         }
