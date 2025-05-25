@@ -168,6 +168,7 @@
 
         function startOfGame() {
             document.getElementById("question").innerHTML = questions[cq];
+            updateButtonVisibility();
             if (questiontypes[cq] == 1) {
                 document.getElementById("multiplechoice").classList.remove("hidden");
                 document.getElementById("shortanswer").classList.add("hidden");
@@ -179,11 +180,18 @@
                 document.getElementById("multiplechoice").classList.add("hidden");
                 document.getElementById("answerblank").value = "";
             }
-            // Show diagram button only for question 14 (cq == 13)
+        }
+
+        function updateButtonVisibility() {
+            const diagramButton = document.getElementById("diagramButton");
+            const nextButton = document.getElementById("next");
+            // Show diagram button and hide next button for question 14 (cq == 13)
             if (cq == 13) {
-                document.getElementById("diagramButton").classList.remove("hidden");
+                diagramButton.classList.remove("hidden");
+                nextButton.classList.add("hidden");
             } else {
-                document.getElementById("diagramButton").classList.add("hidden");
+                diagramButton.classList.add("hidden");
+                nextButton.classList.remove("hidden");
             }
         }
 
@@ -254,17 +262,12 @@
         function next() {
             window.scrollTo(0, 0);
             cq++;
-            // Check if the current question is question 14 (cq is zero-indexed, so 13 corresponds to question 14)
-            if (cq == 13) {
-                document.getElementById("diagramButton").classList.remove("hidden");
-            } else {
-                document.getElementById("diagramButton").classList.add("hidden");
-            }
             if (cq == questions.length) {
                 endgame();
             } else {
                 document.getElementById("questioncounter").innerHTML = "Question " + (cq + 1).toString() + ":";
                 document.getElementById("question").innerHTML = questions[cq];
+                updateButtonVisibility();
                 if (questiontypes[cq] == 1) {
                     document.getElementById("shortanswer").classList.add("hidden");
                     document.getElementById("multiplechoice").classList.remove("hidden");
