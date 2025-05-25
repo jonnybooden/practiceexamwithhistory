@@ -94,3 +94,188 @@
         <form>
             <input name="answer" type="radio" id="answerA"><label id="labelA" for="answerA">Answer A</label><br>
             <input name="answer" type="radio" id="answerB"><label id="labelB" for="answerB">Answer B</label><br>
+            <input name="answer" type="radio" id="answerC"><label id="labelC" for="answerC">Answer C</label><br>
+            <input name="answer" type="radio" id="answerD"><label id="labelD" for="answerD">Answer D</label>
+        </form>
+    </div>
+    <div id="shortanswer" class="hidden">
+        <textarea id="answerblank"></textarea>
+        <div id="a" class="hidden">
+            <span>Correct Answer:<br></span>
+            <span id="aa"></span>
+        </div>
+    </div>
+    <div id="next" onclick="check()">Check</div>
+    <a href="https://jonnybooden.github.io/practiceexamwithhistory/" target="_blank"><div id="return">Return to Home</div></a>
+    <a href="diagram1.html"><div style="left: 75%; margin-top: 10vh;" class="course" id="history"><span class="coursespan">Diagram A</span></div></a>
+
+    <script>
+        let questiontypes = [
+            1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+        ];
+        let questions = [
+            "What is God's order to multiply, subdue, and have dominion over the earth called?",
+            "What are the eight characteristics of life?",
+            "What is the theory of biogenesis?",
+            "What is the variable that is changed in a controlled experiment?",
+            "What is the variable that is measured in a controlled experiment?",
+            "What is a factor that should be controlled in a controlled experiment measuring the relationship between plant growth and sunlight intake?",
+            "What kind of data is '325kg' an example of?",
+            "What kind of data is 'blue with spots' an example of?",
+            "What kind of data is best used in science?",
+            "What axis does the dependent variable (measured variable) go on in a graph? (Remember DRY MIX)",
+            "What axis does the independent variable (intentionally changed variable) go on in a graph? (Remember DRY MIX)",
+            "List the three subatomic particles, their charges, and where they are found in the atom.",
+            "What is matter?"
+        ];
+        let answers = [
+            ["Great Commission", "Golden Rule", "Creation Mandate", "Christian Mandate"],
+            "1. Made of cells<br>2. Reproduce<br>3. Have a universal genetic code<br>4. Grow<br>5. Energy<br>6. Adaptability<br>7. Maintain an internal balance<br>8. Change over time",
+            "All life comes from other life.",
+            ["Dependent Variable", "Independent Variable", "Control", "Constant"],
+            ["Dependent Variable", "Independent Variable", "Control", "Constant"],
+            ["Type of plant", "Sunlight intake", "Plant Growth", "A Plant With no Sunlight Intake"],
+            ["Descriptive Data", "Conclusive Data", "Qualitative Data", "Quantitative Data"],
+            ["Descriptive Data", "Conclusive Data", "Qualitative Data", "Quantitative Data"],
+            ["Descriptive Data", "Conclusive Data", "Qualitative Data", "Quantitative Data"],
+            ["W axis (north to south)", "X axis (left to right)", "Y axis (up and down)", "Z axis (east to west)"],
+            ["W axis (north to south)", "X axis (left to right)", "Y axis (up and down)", "Z axis (east to west)"],
+            "Proton (+, nucleus), Neutron (neutral, nucleus), Electron (-, outside nucleus)",
+            "Anything that has mass and volume."
+        ];
+        let correctanswers = [
+            3, null, null, 2, 1, 1, 4, 3, 4, 3, 2, null, null
+        ];
+        let cq = 0;
+        let numcorrect = 0;
+        const letters = ["A", "B", "C", "D"];
+
+        resizeall();
+        window.addEventListener("resize", resizeall);
+        function resizeall() {
+            const width = Math.max(100, window.innerWidth - window.innerHeight * 0.025);
+            document.getElementById("answerblank").style.width = width + "px";
+            document.getElementById("answerblank").style.top = (document.getElementById("question").offsetHeight + window.innerHeight * 0.05) + "px";
+            document.getElementById("a").style.width = width + "px";
+            document.getElementById("a").style.top = (document.getElementById("question").offsetHeight + document.getElementById("answerblank").offsetHeight + window.innerHeight * 0.06) + "px";
+        }
+
+        startOfGame();
+
+        function startOfGame() {
+            document.getElementById("question").innerHTML = questions[cq];
+            if (questiontypes[cq] == 1) {
+                document.getElementById("multiplechoice").classList.remove("hidden");
+                document.getElementById("shortanswer").classList.add("hidden");
+                for (let i = 0; i < 4; i++) {
+                    document.getElementById("label" + letters[i]).innerHTML = answers[cq][i];
+                }
+            } else {
+                document.getElementById("shortanswer").classList.remove("hidden");
+                document.getElementById("multiplechoice").classList.add("hidden");
+                document.getElementById("answerblank").value = "";
+            }
+        }
+
+        function endgame() {
+            localStorage.setItem("nc", numcorrect);
+            localStorage.setItem("tq", cq);
+            window.location.href = "biologyresults.html";
+        }
+
+        function check() {
+            let checked = false;
+            let feedback = document.createElement("div");
+            feedback.id = "feedback";
+            if (questiontypes[cq] == 1) {
+                for (let i = 0; i < 4; i++) {
+                    if (document.getElementById("answer" + letters[i]).checked) {
+                        checked = true;
+                    }
+                }
+                if (checked) {
+                    for (let i = 0; i < 4; i++) {
+                        document.getElementById("label" + letters[i]).style.color = "red";
+                        if (document.getElementById("answer" + letters[i]).checked) {
+                            document.getElementById("label" + letters[i]).style.color = "#ff6600";
+                        }
+                        if (i + 1 == correctanswers[cq]) {
+                            document.getElementById("label" + letters[i]).style.color = "green";
+                        }
+                        if (i + 1 == correctanswers[cq] && document.getElementById("answer" + letters[i]).checked) {
+                            numcorrect++;
+                            feedback.innerHTML = "Correct!";
+                            feedback.style.color = "green";
+                        } else if (document.getElementById("answer" + letters[i]).checked) {
+                            feedback.innerHTML = "Incorrect. The correct answer is: " + answers[cq][correctanswers[cq] - 1];
+                            feedback.style.color = "red";
+                        }
+                    }
+                    document.getElementById("multiplechoice").appendChild(feedback);
+                }
+            } else {
+                if (document.getElementById("answerblank").value.trim() !== "") {
+                    checked = true;
+                    document.getElementById("a").classList.remove("hidden");
+                    document.getElementById("aa").innerHTML = answers[cq];
+                    const userAnswer = document.getElementById("answerblank").value.trim().toLowerCase();
+                    const correctAnswer = answers[cq].toLowerCase();
+                    if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer)) {
+                        numcorrect++;
+                        feedback.innerHTML = "Correct!";
+                        feedback.style.color = "green";
+                        document.getElementById("answerblank").style.color = "green";
+                    } else {
+                        feedback.innerHTML = "Incorrect. See the correct answer below.";
+                        feedback.style.color = "red";
+                        document.getElementById("answerblank").style.color = "red";
+                    }
+                    document.getElementById("shortanswer").appendChild(feedback);
+                }
+            }
+            if (checked) {
+                document.getElementById("next").innerHTML = "Next";
+                document.getElementById("next").setAttribute("onclick", "next()");
+            } else {
+                alert("Please submit an answer.");
+            }
+        }
+
+        function next() {
+            window.scrollTo(0, 0);
+            cq++;
+            // Check if the current question is question 14 (cq is zero-indexed, so 13 corresponds to question 14)
+            if (cq == 13) {
+                window.location.href = "diagram1.html"; // Redirect to diagram1.html
+                return; // Stop further execution of the function
+            }
+            if (cq == questions.length) {
+                endgame();
+            } else {
+                document.getElementById("questioncounter").innerHTML = "Question " + (cq + 1).toString() + ":";
+                document.getElementById("question").innerHTML = questions[cq];
+                if (questiontypes[cq] == 1) {
+                    document.getElementById("shortanswer").classList.add("hidden");
+                    document.getElementById("multiplechoice").classList.remove("hidden");
+                    for (let i = 0; i < 4; i++) {
+                        document.getElementById("label" + letters[i]).innerHTML = answers[cq][i];
+                        document.getElementById("label" + letters[i]).style.color = "black";
+                        document.getElementById("answer" + letters[i]).checked = false;
+                    }
+                } else {
+                    document.getElementById("multiplechoice").classList.add("hidden");
+                    document.getElementById("shortanswer").classList.remove("hidden");
+                    document.getElementById("answerblank").style.color = "black";
+                    document.getElementById("a").classList.add("hidden");
+                    document.getElementById("answerblank").value = "";
+                }
+                let feedback = document.getElementById("feedback");
+                if (feedback) feedback.remove();
+                document.getElementById("next").innerHTML = "Check";
+                document.getElementById("next").setAttribute("onclick", `check()`);
+                resizeall();
+            }
+        }
+    </script>
+</body>
+</html>
