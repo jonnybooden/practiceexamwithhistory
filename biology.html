@@ -52,6 +52,19 @@
             background-color: white;
             position: fixed;
         }
+        #diagram {
+            text-align: center;
+            font-size: 5vh;
+            border-radius: 1vh;
+            outline: 0.6vh solid black;
+            width: 15vh;
+            height: 6vh;
+            right: 2vh;
+            bottom: 2vh;
+            background-color: white;
+            position: fixed;
+            display: none;
+        }
         #question {
             margin-top: -2vh;
         }
@@ -78,10 +91,6 @@
             color: white;
             position: absolute;
             transform: translate(-50%, 0%);
-        }
-        #diagramButton {
-            left: 75%;
-            margin-top: 10vh;
         }
         h1 {
             text-align: center;
@@ -110,8 +119,8 @@
         </div>
     </div>
     <div id="next" onclick="check()">Check</div>
+    <a href="diagram1.html"><div id="diagram">Next</div></a>
     <a href="https://jonnybooden.github.io/practiceexamwithhistory/" target="_blank"><div id="return">Return to Home</div></a>
-    <a href="diagram1.html"><div class="course hidden" id="diagramButton"><span class="coursespan">Diagram A</span></div></a>
 
     <script>
         let questiontypes = [
@@ -168,6 +177,7 @@
 
         function startOfGame() {
             document.getElementById("question").innerHTML = questions[cq];
+            updateDiagramButtonVisibility();
             if (questiontypes[cq] == 1) {
                 document.getElementById("multiplechoice").classList.remove("hidden");
                 document.getElementById("shortanswer").classList.add("hidden");
@@ -179,11 +189,17 @@
                 document.getElementById("multiplechoice").classList.add("hidden");
                 document.getElementById("answerblank").value = "";
             }
-            // Show diagram button only for question 14 (cq == 13)
-            if (cq == 13) {
-                document.getElementById("diagramButton").classList.remove("hidden");
+        }
+
+        function updateDiagramButtonVisibility() {
+            const diagramButton = document.getElementById("diagram");
+            const nextButton = document.getElementById("next");
+            if (cq === 13) {
+                diagramButton.style.display = "block";
+                nextButton.style.display = "none";
             } else {
-                document.getElementById("diagramButton").classList.add("hidden");
+                diagramButton.style.display = "none";
+                nextButton.style.display = "block";
             }
         }
 
@@ -246,6 +262,9 @@
             if (checked) {
                 document.getElementById("next").innerHTML = "Next";
                 document.getElementById("next").setAttribute("onclick", "next()");
+                if (cq === 12) { // Show "Next" on diagram button for question 13 (question 14)
+                    document.getElementById("diagram").innerHTML = "Next";
+                }
             } else {
                 alert("Please submit an answer.");
             }
@@ -254,17 +273,12 @@
         function next() {
             window.scrollTo(0, 0);
             cq++;
-            // Check if the current question is question 14 (cq is zero-indexed, so 13 corresponds to question 14)
-            if (cq == 13) {
-                document.getElementById("diagramButton").classList.remove("hidden");
-            } else {
-                document.getElementById("diagramButton").classList.add("hidden");
-            }
             if (cq == questions.length) {
                 endgame();
             } else {
                 document.getElementById("questioncounter").innerHTML = "Question " + (cq + 1).toString() + ":";
                 document.getElementById("question").innerHTML = questions[cq];
+                updateDiagramButtonVisibility();
                 if (questiontypes[cq] == 1) {
                     document.getElementById("shortanswer").classList.add("hidden");
                     document.getElementById("multiplechoice").classList.remove("hidden");
