@@ -3,20 +3,22 @@
 <style> 
 img {
   width: 100%;
-  height: 40%; /* Adjusted height to ensure the image fits at the top */
+  height: 40%; /* Image takes up the top portion of the screen */
   position: absolute;
   top: 0; /* Places the image at the top of the page */
   left: 50%;
   transform: translateX(-50%); /* Centers the image horizontally */
 }
+
 h1 {
-  font-family: "Times New Roman", serif; /* Corrected font-family syntax */
+  font-family: "Times New Roman", serif; /* Font styling */
   font-size: 50px;
-  color: black; /* Moved inline style to CSS for consistency */
+  color: black;
   position: absolute;
-  top: 50%; /* Places the question in the middle vertically */
-  left: 50%;
-  transform: translate(-50%, -50%); /* Centers the h1 both horizontally and vertically */
-  text-align: left; /* Ensures the text is centered */
+  top: 50%; /* Vertically centers the text */
+  left: 50%; /* Horizontally centers the text */
+  transform: translate(-50%, -50%); /* Adjusts for the element's own dimensions to center it perfectly */
+  text-align: center; /* Ensures text alignment */
+  white-space: nowrap; /* Keeps all text on the same line */
 }
 </style>
