@@ -79,6 +79,10 @@
             position: absolute;
             transform: translate(-50%, 0%);
         }
+        #diagramButton {
+            left: 75%;
+            margin-top: 10vh;
+        }
         h1 {
             text-align: center;
         }
@@ -107,7 +111,7 @@
     </div>
     <div id="next" onclick="check()">Check</div>
     <a href="https://jonnybooden.github.io/practiceexamwithhistory/" target="_blank"><div id="return">Return to Home</div></a>
-    <a href="diagram1.html"><div style="left: 75%; margin-top: 10vh;" class="course" id="history"><span class="coursespan">Diagram A</span></div></a>
+    <a href="diagram1.html"><div class="course hidden" id="diagramButton"><span class="coursespan">Diagram A</span></div></a>
 
     <script>
         let questiontypes = [
@@ -174,6 +178,12 @@
                 document.getElementById("shortanswer").classList.remove("hidden");
                 document.getElementById("multiplechoice").classList.add("hidden");
                 document.getElementById("answerblank").value = "";
+            }
+            // Show diagram button only for question 14 (cq == 13)
+            if (cq == 13) {
+                document.getElementById("diagramButton").classList.remove("hidden");
+            } else {
+                document.getElementById("diagramButton").classList.add("hidden");
             }
         }
 
@@ -246,8 +256,9 @@
             cq++;
             // Check if the current question is question 14 (cq is zero-indexed, so 13 corresponds to question 14)
             if (cq == 13) {
-                window.location.href = "diagram1.html"; // Redirect to diagram1.html
-                return; // Stop further execution of the function
+                document.getElementById("diagramButton").classList.remove("hidden");
+            } else {
+                document.getElementById("diagramButton").classList.add("hidden");
             }
             if (cq == questions.length) {
                 endgame();
