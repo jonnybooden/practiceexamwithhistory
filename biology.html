@@ -119,8 +119,8 @@
         ];
         let questions = [
             "What is God's order to multiply, subdue, and have dominion over the earth called?",
-            "What are the eight characteristics of life?",
-            "What is the theory of biogenesis?",
+            "Which is not one of the eight characteristics of life?",
+            "What is the theory that all life comes from other life",
             "What is the variable that is changed in a controlled experiment?",
             "What is the variable that is measured in a controlled experiment?",
             "What is a factor that should be controlled in a controlled experiment measuring the relationship between plant growth and sunlight intake?",
@@ -129,13 +129,14 @@
             "What kind of data is best used in science?",
             "What axis does the dependent variable (measured variable) go on in a graph? (Remember DRY MIX)",
             "What axis does the independent variable (intentionally changed variable) go on in a graph? (Remember DRY MIX)",
-            "List the three subatomic particles, their charges, and where they are found in the atom.",
-            "What is matter?"
+            "What has mass and volume?",
+            "Which is not one of the three atom bonds?",
+            "What is ghe atomic number?",
         ];
         let answers = [
             ["Great Commission", "Golden Rule", "Creation Mandate", "Christian Mandate"],
-            "1. Made of cells<br>2. Reproduce<br>3. Have a universal genetic code<br>4. Grow<br>5. Energy<br>6. Adaptability<br>7. Maintain an internal balance<br>8. Change over time",
-            "All life comes from other life.",
+            ["Made of cells", "Sexual Reproduce", "Have a universal genetic code", "Grow"],
+            ["Biogenesis", "Evolution", "Spontaneous generation", "Succession"],
             ["Dependent Variable", "Independent Variable", "Control", "Constant"],
             ["Dependent Variable", "Independent Variable", "Control", "Constant"],
             ["Type of plant", "Sunlight intake", "Plant Growth", "A Plant With no Sunlight Intake"],
@@ -143,12 +144,13 @@
             ["Descriptive Data", "Conclusive Data", "Qualitative Data", "Quantitative Data"],
             ["Descriptive Data", "Conclusive Data", "Qualitative Data", "Quantitative Data"],
             ["W axis (north to south)", "X axis (left to right)", "Y axis (up and down)", "Z axis (east to west)"],
-            ["W axis (north to south)", "X axis (left to right)", "Y axis (up and down)", "Z axis (east to west)"],
-            "Proton (+, nucleus), Neutron (neutral, nucleus), Electron (-, outside nucleus)",
-            "Anything that has mass and volume."
+            ["W axis (north to south)", "X axis (left to right)", "Y axis (up and down)", "Z axis (east to west)"], 
+            ["Energy", "Light", "Atoms", "Matter"],
+            ["Oxygen bond", "Hydrogen bond", "Ionic bond", "Covalent bond"], 
+            [" "],
         ];
         let correctanswers = [
-            3, null, null, 2, 1, 1, 4, 3, 4, 3, 2, null, null
+            3, 2, 1, 2, 1, 1, 4, 3, 4, 3, 2, 4, 1
         ];
         let cq = 0;
         let numcorrect = 0;
@@ -184,7 +186,7 @@
 
         function updateButtonVisibility() {
             // Show diagram button and hide next button only for question 13 (cq == 12)
-            if (cq == 12) {
+            if (cq == 13) {
                 document.getElementById("diagramButton").classList.remove("hidden");
                 document.getElementById("next").style.display = "none";
             } else {
