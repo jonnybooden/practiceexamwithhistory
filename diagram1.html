@@ -115,12 +115,12 @@
 
     <script>
         let questiontypes = [
-            1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 // Added type for question 14
         ];
         let questions = [
             "What is God's order to multiply, subdue, and have dominion over the earth called?",
             "Which is not one of the eight characteristics of life?",
-            "What is the theory that all life comes from other life",
+            "What is the theory that all life comes from other life?",
             "What is the variable that is changed in a controlled experiment?",
             "What is the variable that is measured in a controlled experiment?",
             "What is a factor that should be controlled in a controlled experiment measuring the relationship between plant growth and sunlight intake?",
@@ -131,7 +131,7 @@
             "What axis does the independent variable (intentionally changed variable) go on in a graph? (Remember DRY MIX)",
             "What has mass and volume?",
             "Which is not one of the three atom bonds?",
-            "What is ghe atomic number?"
+            "What is the atomic number?" // Fixed typo: "ghe" to "the"
         ];
         let answers = [
             ["Great Commission", "Golden Rule", "Creation Mandate", "Christian Mandate"],
@@ -147,15 +147,15 @@
             ["W axis (north to south)", "X axis (left to right)", "Y axis (up and down)", "Z axis (east to west)"],
             ["Energy", "Light", "Atoms", "Matter"],
             ["Oxygen bond", "Hydrogen bond", "Ionic bond", "Covalent bond"],
-            [" "]
+            ["The number of protons in the nucleus of an atom"] // Proper answer for question 14
         ];
         let correctanswers = [
-            3, 2, 1, 2, 1, 1, 4, 3, 4, 3, 2, 4, 1
+            3, 2, 1, 2, 1, 1, 4, 3, 4, 3, 2, 4, 1, null // null for short-answer question
         ];
         let cq = 0;
         let numcorrect = 0;
         const letters = ["A", "B", "C", "D"];
-        let answeredQuestions = []; // Track answered questions
+        let answeredQuestions = [];
 
         // Load progress from localStorage
         function loadProgress() {
@@ -174,7 +174,7 @@
             localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
         }
 
-        // Clear progress (optional, for reset functionality)
+        // Clear progress
         function clearProgress() {
             localStorage.removeItem("cq");
             localStorage.removeItem("numcorrect");
@@ -199,6 +199,10 @@
         startOfGame();
 
         function startOfGame() {
+            if (cq >= questions.length) {
+                endgame();
+                return;
+            }
             document.getElementById("questioncounter").innerHTML = "Question " + (cq + 1).toString() + ":";
             document.getElementById("question").innerHTML = questions[cq];
             updateButtonVisibility();
@@ -217,28 +221,27 @@
                 document.getElementById("answerblank").style.color = "black";
                 document.getElementById("a").classList.add("hidden");
             }
-            // Restore feedback if question was answered
             if (answeredQuestions.includes(cq)) {
                 restoreFeedback();
             }
         }
 
         function updateButtonVisibility() {
-            // Show diagram button and hide next button only for question 14 (cq == 13)
+            // Show diagram button on question 14 (cq == 13), but keep next button visible
             if (cq == 13) {
                 document.getElementById("diagramButton").classList.remove("hidden");
-                document.getElementById("next").style.display = "none";
+                document.getElementById("next").style.display = "block"; // Keep next button visible
             } else {
                 document.getElementById("diagramButton").classList.add("hidden");
                 document.getElementById("next").style.display = "block";
-                // Update next button text based on whether question is answered
-                if (answeredQuestions.includes(cq)) {
-                    document.getElementById("next").innerHTML = "Next";
-                    document.getElementById("next").setAttribute("onclick", "next()");
-                } else {
-                    document.getElementById("next").innerHTML = "Check";
-                    document.getElementById("next").setAttribute("onclick", "check()");
-                }
+            }
+            // Update next button text based on whether question is answered
+            if (answeredQuestions.includes(cq)) {
+                document.getElementById("next").innerHTML = "Next";
+                document.getElementById("next").setAttribute("onclick", "next()");
+            } else {
+                document.getElementById("next").innerHTML = "Check";
+                document.getElementById("next").setAttribute("onclick", "check()");
             }
         }
 
@@ -252,7 +255,6 @@
                         document.getElementById("label" + letters[i]).style.color = "green";
                     }
                 }
-                // Note: We don't know which incorrect answer was selected, so we can't highlight it
                 feedback.innerHTML = answeredQuestions.includes(cq + ":correct") ? "Correct!" : "Incorrect. The correct answer is: " + answers[cq][correctanswers[cq] - 1];
                 feedback.style.color = answeredQuestions.includes(cq + ":correct") ? "green" : "red";
                 document.getElementById("multiplechoice").appendChild(feedback);
@@ -267,9 +269,9 @@
         }
 
         function endgame() {
-            clearProgress(); // Clear progress when quiz ends
+            clearProgress();
             localStorage.setItem("nc", numcorrect);
-            localStorage.setItem("tq", cq);
+            localStorage.setItem("tq", questions.length);
             window.location.href = "biologyresults.html";
         }
 
@@ -316,7 +318,10 @@
                     document.getElementById("aa").innerHTML = answers[cq];
                     const userAnswer = document.getElementById("answerblank").value.trim().toLowerCase();
                     const correctAnswer = answers[cq].toLowerCase();
-                    if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer)) {
+                    // Flexible evaluation for essay question
+                    const keywords = correctAnswer.split(" ").filter(word => word.length > 3); // Key words longer than 3 chars
+                    let correct = keywords.every(keyword => userAnswer.includes(keyword));
+                    if (correct || userAnswer.includes(correctAnswer)) {
                         numcorrect++;
                         feedback.innerHTML = "Correct!";
                         feedback.style.color = "green";
