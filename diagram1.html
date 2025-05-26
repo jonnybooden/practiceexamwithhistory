@@ -1,11 +1,379 @@
-<img src="IMG_6185.jpeg">
-<style> 
-img {
-  width: 100%;
-  height: 50%; /* Image takes up the top portion of the screen */
-  position: absolute;
-  top: 0; /* Places the image at the top of the page */
-  left: 50%;
-  transform: translateX(-50%); /* Centers the image horizontally */
-}
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biology Exam Review</title>
+    <style>
+        #con {
+            background-color: black;
+            color: white;
+            border-radius: 1vh;
+            padding: 1vh;
+            margin-top: 2vh;
+            margin-left: -0.2vh;
+        }
+        #aa {
+            font-weight: bold;
+        }
+        #a {
+            position: absolute;
+            font-size: 2.5vh;
+            font-family: "Times New Roman";
+        }
+        #answerblank {
+            height: 30vh;
+            position: absolute;
+            font-size: 2.5vh;
+            font-family: "Times New Roman";
+        }
+        #return {
+            text-align: center;
+            font-size: 5vh;
+            border-radius: 1vh;
+            outline: 0.6vh solid black;
+            width: 35vh;
+            color: black;
+            height: 6vh;
+            left: 2vh;
+            bottom: 2vh;
+            background-color: white;
+            position: fixed;
+        }
+        #next {
+            text-align: center;
+            font-size: 5vh;
+            border-radius: 1vh;
+            outline: 0.6vh solid black;
+            width: 15vh;
+            height: 6vh;
+            right: 2vh;
+            bottom: 2vh;
+            background-color: white;
+            position: fixed;
+        }
+        #question {
+            margin-top: -2vh;
+        }
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #feedback {
+            margin-top: 10px;
+            font-size: 2.5vh;
+        }
+        .coursespan {
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+            font-size: 5vh;
+        }
+        .course {
+            width: 20vh;
+            height: 7vh;
+            background-color: black;
+            border-radius: 1vh;
+            text-align: center;
+            color: white;
+            position: absolute;
+            transform: translate(-50%, 0%);
+        }
+        #diagramButton {
+            left: 75%;
+            margin-top: 10vh;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <p id="questioncounter">Question 1:</p>
+    <h1 id="question"></h1>
+    <div id="multiplechoice" class="hidden">
+        <form>
+            <input name="answer" type="radio" id="answerA"><label id="labelA" for="answerA">Answer A</label><br>
+            <input name="answer" type="radio" id="answerB"><label id="labelB" for="answerB">Answer B</label><br>
+            <input name="answer" type="radio" id="answerC"><label id="labelC" for="answerC">Answer C</label><br>
+            <input name="answer" type="radio" id="answerD"><label id="labelD" for="answerD">Answer D</label>
+        </form>
+    </div>
+    <div id="shortanswer" class="hidden">
+        <textarea id="answerblank"></textarea>
+        <div id="a" class="hidden">
+            <span>Correct Answer:<br></span>
+            <span id="aa"></span>
+        </div>
+    </div>
+    <div id="next" onclick="check()">Check</div>
+    <a href="https://jonnybooden.github.io/practiceexamwithhistory/" target="_blank"><div id="return">Return to Home</div></a>
+    <a href="diagram1.html" onclick="saveProgress()"><div class="course hidden" id="diagramButton"><span class="coursespan">Diagram A</span></div></a>
+
+    <script>
+        let questiontypes = [
+            1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+        ];
+        let questions = [
+            "What is God's order to multiply, subdue, and have dominion over the earth called?",
+            "Which is not one of the eight characteristics of life?",
+            "What is the theory that all life comes from other life",
+            "What is the variable that is changed in a controlled experiment?",
+            "What is the variable that is measured in a controlled experiment?",
+            "What is a factor that should be controlled in a controlled experiment measuring the relationship between plant growth and sunlight intake?",
+            "What kind of data is '325kg' an example of?",
+            "What kind of data is 'blue with spots' an example of?",
+            "What kind of data is best used in science?",
+            "What axis does the dependent variable (measured variable) go on in a graph? (Remember DRY MIX)",
+            "What axis does the independent variable (intentionally changed variable) go on in a graph? (Remember DRY MIX)",
+            "What has mass and volume?",
+            "Which is not one of the three atom bonds?",
+            "What is ghe atomic number?"
+        ];
+        let answers = [
+            ["Great Commission", "Golden Rule", "Creation Mandate", "Christian Mandate"],
+            ["Made of cells", "Sexual Reproduce", "Have a universal genetic code", "Grow"],
+            ["Biogenesis", "Evolution", "Spontaneous generation", "Succession"],
+            ["Dependent Variable", "Independent Variable", "Control", "Constant"],
+            ["Dependent Variable", "Independent Variable", "Control", "Constant"],
+            ["Type of plant", "Sunlight intake", "Plant Growth", "A Plant With no Sunlight Intake"],
+            ["Descriptive Data", "Conclusive Data", "Qualitative Data", "Quantitative Data"],
+            ["Descriptive Data", "Conclusive Data", "Qualitative Data", "Quantitative Data"],
+            ["Descriptive Data", "Conclusive Data", "Qualitative Data", "Quantitative Data"],
+            ["W axis (north to south)", "X axis (left to right)", "Y axis (up and down)", "Z axis (east to west)"],
+            ["W axis (north to south)", "X axis (left to right)", "Y axis (up and down)", "Z axis (east to west)"],
+            ["Energy", "Light", "Atoms", "Matter"],
+            ["Oxygen bond", "Hydrogen bond", "Ionic bond", "Covalent bond"],
+            [" "]
+        ];
+        let correctanswers = [
+            3, 2, 1, 2, 1, 1, 4, 3, 4, 3, 2, 4, 1
+        ];
+        let cq = 0;
+        let numcorrect = 0;
+        const letters = ["A", "B", "C", "D"];
+        let answeredQuestions = []; // Track answered questions
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const savedCq = localStorage.getItem("cq");
+            const savedNumCorrect = localStorage.getItem("numcorrect");
+            const savedAnsweredQuestions = localStorage.getItem("answeredQuestions");
+            if (savedCq !== null) cq = parseInt(savedCq);
+            if (savedNumCorrect !== null) numcorrect = parseInt(savedNumCorrect);
+            if (savedAnsweredQuestions !== null) answeredQuestions = JSON.parse(savedAnsweredQuestions);
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            localStorage.setItem("cq", cq);
+            localStorage.setItem("numcorrect", numcorrect);
+            localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
+        }
+
+        // Clear progress (optional, for reset functionality)
+        function clearProgress() {
+            localStorage.removeItem("cq");
+            localStorage.removeItem("numcorrect");
+            localStorage.removeItem("answeredQuestions");
+            cq = 0;
+            numcorrect = 0;
+            answeredQuestions = [];
+        }
+
+        resizeall();
+        window.addEventListener("resize", resizeall);
+        function resizeall() {
+            const width = Math.max(100, window.innerWidth - window.innerHeight * 0.025);
+            document.getElementById("answerblank").style.width = width + "px";
+            document.getElementById("answerblank").style.top = (document.getElementById("question").offsetHeight + window.innerHeight * 0.05) + "px";
+            document.getElementById("a").style.width = width + "px";
+            document.getElementById("a").style.top = (document.getElementById("question").offsetHeight + document.getElementById("answerblank").offsetHeight + window.innerHeight * 0.06) + "px";
+        }
+
+        // Load progress and start game
+        loadProgress();
+        startOfGame();
+
+        function startOfGame() {
+            document.getElementById("questioncounter").innerHTML = "Question " + (cq + 1).toString() + ":";
+            document.getElementById("question").innerHTML = questions[cq];
+            updateButtonVisibility();
+            if (questiontypes[cq] == 1) {
+                document.getElementById("multiplechoice").classList.remove("hidden");
+                document.getElementById("shortanswer").classList.add("hidden");
+                for (let i = 0; i < 4; i++) {
+                    document.getElementById("label" + letters[i]).innerHTML = answers[cq][i];
+                    document.getElementById("answer" + letters[i]).checked = false;
+                    document.getElementById("label" + letters[i]).style.color = "black";
+                }
+            } else {
+                document.getElementById("shortanswer").classList.remove("hidden");
+                document.getElementById("multiplechoice").classList.add("hidden");
+                document.getElementById("answerblank").value = "";
+                document.getElementById("answerblank").style.color = "black";
+                document.getElementById("a").classList.add("hidden");
+            }
+            // Restore feedback if question was answered
+            if (answeredQuestions.includes(cq)) {
+                restoreFeedback();
+            }
+        }
+
+        function updateButtonVisibility() {
+            // Show diagram button and hide next button only for question 14 (cq == 13)
+            if (cq == 13) {
+                document.getElementById("diagramButton").classList.remove("hidden");
+                document.getElementById("next").style.display = "none";
+            } else {
+                document.getElementById("diagramButton").classList.add("hidden");
+                document.getElementById("next").style.display = "block";
+                // Update next button text based on whether question is answered
+                if (answeredQuestions.includes(cq)) {
+                    document.getElementById("next").innerHTML = "Next";
+                    document.getElementById("next").setAttribute("onclick", "next()");
+                } else {
+                    document.getElementById("next").innerHTML = "Check";
+                    document.getElementById("next").setAttribute("onclick", "check()");
+                }
+            }
+        }
+
+        function restoreFeedback() {
+            let feedback = document.createElement("div");
+            feedback.id = "feedback";
+            if (questiontypes[cq] == 1) {
+                for (let i = 0; i < 4; i++) {
+                    document.getElementById("label" + letters[i]).style.color = "red";
+                    if (i + 1 == correctanswers[cq]) {
+                        document.getElementById("label" + letters[i]).style.color = "green";
+                    }
+                }
+                // Note: We don't know which incorrect answer was selected, so we can't highlight it
+                feedback.innerHTML = answeredQuestions.includes(cq + ":correct") ? "Correct!" : "Incorrect. The correct answer is: " + answers[cq][correctanswers[cq] - 1];
+                feedback.style.color = answeredQuestions.includes(cq + ":correct") ? "green" : "red";
+                document.getElementById("multiplechoice").appendChild(feedback);
+            } else {
+                document.getElementById("a").classList.remove("hidden");
+                document.getElementById("aa").innerHTML = answers[cq];
+                document.getElementById("answerblank").style.color = answeredQuestions.includes(cq + ":correct") ? "green" : "red";
+                feedback.innerHTML = answeredQuestions.includes(cq + ":correct") ? "Correct!" : "Incorrect. See the correct answer below.";
+                feedback.style.color = answeredQuestions.includes(cq + ":correct") ? "green" : "red";
+                document.getElementById("shortanswer").appendChild(feedback);
+            }
+        }
+
+        function endgame() {
+            clearProgress(); // Clear progress when quiz ends
+            localStorage.setItem("nc", numcorrect);
+            localStorage.setItem("tq", cq);
+            window.location.href = "biologyresults.html";
+        }
+
+        function check() {
+            let checked = false;
+            let feedback = document.createElement("div");
+            feedback.id = "feedback";
+            if (questiontypes[cq] == 1) {
+                for (let i = 0; i < 4; i++) {
+                    if (document.getElementById("answer" + letters[i]).checked) {
+                        checked = true;
+                    }
+                }
+                if (checked) {
+                    for (let i = 0; i < 4; i++) {
+                        document.getElementById("label" + letters[i]).style.color = "red";
+                        if (document.getElementById("answer" + letters[i]).checked) {
+                            document.getElementById("label" + letters[i]).style.color = "#ff6600";
+                        }
+                        if (i + 1 == correctanswers[cq]) {
+                            document.getElementById("label" + letters[i]).style.color = "green";
+                        }
+                        if (i + 1 == correctanswers[cq] && document.getElementById("answer" + letters[i]).checked) {
+                            numcorrect++;
+                            feedback.innerHTML = "Correct!";
+                            feedback.style.color = "green";
+                            if (!answeredQuestions.includes(cq)) {
+                                answeredQuestions.push(cq, cq + ":correct");
+                            }
+                        } else if (document.getElementById("answer" + letters[i]).checked) {
+                            feedback.innerHTML = "Incorrect. The correct answer is: " + answers[cq][correctanswers[cq] - 1];
+                            feedback.style.color = "red";
+                            if (!answeredQuestions.includes(cq)) {
+                                answeredQuestions.push(cq);
+                            }
+                        }
+                    }
+                    document.getElementById("multiplechoice").appendChild(feedback);
+                }
+            } else {
+                if (document.getElementById("answerblank").value.trim() !== "") {
+                    checked = true;
+                    document.getElementById("a").classList.remove("hidden");
+                    document.getElementById("aa").innerHTML = answers[cq];
+                    const userAnswer = document.getElementById("answerblank").value.trim().toLowerCase();
+                    const correctAnswer = answers[cq].toLowerCase();
+                    if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer)) {
+                        numcorrect++;
+                        feedback.innerHTML = "Correct!";
+                        feedback.style.color = "green";
+                        document.getElementById("answerblank").style.color = "green";
+                        if (!answeredQuestions.includes(cq)) {
+                            answeredQuestions.push(cq, cq + ":correct");
+                        }
+                    } else {
+                        feedback.innerHTML = "Incorrect. See the correct answer below.";
+                        feedback.style.color = "red";
+                        document.getElementById("answerblank").style.color = "red";
+                        if (!answeredQuestions.includes(cq)) {
+                            answeredQuestions.push(cq);
+                        }
+                    }
+                    document.getElementById("shortanswer").appendChild(feedback);
+                }
+            }
+            if (checked) {
+                document.getElementById("next").innerHTML = "Next";
+                document.getElementById("next").setAttribute("onclick", "next()");
+                saveProgress();
+            } else {
+                alert("Please submit an answer.");
+            }
+        }
+
+        function next() {
+            window.scrollTo(0, 0);
+            cq++;
+            if (cq == questions.length) {
+                endgame();
+            } else {
+                document.getElementById("questioncounter").innerHTML = "Question " + (cq + 1).toString() + ":";
+                document.getElementById("question").innerHTML = questions[cq];
+                updateButtonVisibility();
+                if (questiontypes[cq] == 1) {
+                    document.getElementById("shortanswer").classList.add("hidden");
+                    document.getElementById("multiplechoice").classList.remove("hidden");
+                    for (let i = 0; i < 4; i++) {
+                        document.getElementById("label" + letters[i]).innerHTML = answers[cq][i];
+                        document.getElementById("label" + letters[i]).style.color = "black";
+                        document.getElementById("answer" + letters[i]).checked = false;
+                    }
+                } else {
+                    document.getElementById("multiplechoice").classList.add("hidden");
+                    document.getElementById("shortanswer").classList.remove("hidden");
+                    document.getElementById("answerblank").style.color = "black";
+                    document.getElementById("a").classList.add("hidden");
+                    document.getElementById("answerblank").value = "";
+                }
+                let feedback = document.getElementById("feedback");
+                if (feedback) feedback.remove();
+                saveProgress();
+                resizeall();
+            }
+        }
+    </script>
+</body>
+</html>
