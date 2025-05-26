@@ -309,27 +309,61 @@
         startOfGame();
 
         function startOfGame() {
+            // Load progress from localStorage
+            const savedCq = localStorage.getItem("cq");
+            const savedNumCorrect = localStorage.getItem("numcorrect");
+            const savedAnswer = localStorage.getItem("selectedAnswer");
+
+            if (savedCq !== null) {
+                cq = parseInt(savedCq);
+            }
+            if (savedNumCorrect !== null) {
+                numcorrect = parseInt(savedNumCorrect);
+            }
+
+            document.getElementById("questioncounter").innerHTML = "Question " + (cq + 1).toString() + ":";
             document.getElementById("question").innerHTML = questions[cq];
             document.getElementById("multiplechoice").classList.remove("hidden");
+
             for (let i = 0; i < 4; i++) {
                 document.getElementById("label" + letters[i]).innerHTML = answers[cq][i];
+                document.getElementById("answer" + letters[i]).checked = false;
+                document.getElementById("label" + letters[i]).style.color = "black";
             }
+
+            // Restore selected answer if available
+            if (savedAnswer) {
+                document.getElementById("answer" + savedAnswer).checked = true;
+            }
+
+            // Ensure the button is in the correct state
+            document.getElementById("next").innerHTML = "Check";
+            document.getElementById("next").setAttribute("onclick", "check()");
         }
 
         function endgame() {
             localStorage.setItem("nc", numcorrect);
             localStorage.setItem("tq", cq);
+            // Clear saved progress
+            localStorage.removeItem("cq");
+            localStorage.removeItem("numcorrect");
+            localStorage.removeItem("selectedAnswer");
             window.location.href = "biologyresults.html";
         }
 
         function check() {
             let checked = false;
+            let selectedAnswer = null;
             for (let i = 0; i < 4; i++) {
                 if (document.getElementById("answer" + letters[i]).checked) {
                     checked = true;
+                    selectedAnswer = letters[i];
                 }
             }
             if (checked) {
+                // Save selected answer
+                localStorage.setItem("selectedAnswer", selectedAnswer);
+
                 let feedback = document.createElement("div");
                 feedback.id = "feedback";
                 feedback.style.marginTop = "10px";
@@ -353,6 +387,10 @@
                 document.getElementById("multiplechoice").appendChild(feedback);
                 document.getElementById("next").innerHTML = "Next";
                 document.getElementById("next").setAttribute("onclick", "next()");
+
+                // Save progress
+                localStorage.setItem("cq", cq);
+                localStorage.setItem("numcorrect", numcorrect);
             } else {
                 alert("Please submit an answer.");
             }
@@ -361,6 +399,9 @@
         function next() {
             window.scrollTo(0, 0);
             cq++;
+            // Clear selected answer for the new question
+            localStorage.removeItem("selectedAnswer");
+
             if (cq == questions.length) {
                 endgame();
             } else {
@@ -376,6 +417,10 @@
                 if (feedback) feedback.remove();
                 document.getElementById("next").innerHTML = "Check";
                 document.getElementById("next").setAttribute("onclick", "check()");
+
+                // Save progress
+                localStorage.setItem("cq", cq);
+                localStorage.setItem("numcorrect", numcorrect);
             }
         }
     </script>
