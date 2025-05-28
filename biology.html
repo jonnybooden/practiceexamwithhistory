@@ -5,814 +5,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biology Exam Review</title>
     <style>
-        #con {
-            background-color: black;
-            color: white;
-            border-radius: 1vh;
-            padding: 1vh;
-            margin-top: 2vh;
-            margin-left: -0.2vh;
-        }
-        #aa {
-            font-weight: bold;
-        }
-        #a {
-            position: absolute;
-            font-size: 2.5vh;
-            font-family: "Times New Roman";
-        }
-        #answerblank {
-            height: 30vh;
-            position: absolute;
-            font-size: 2.5vh;
-            font-family: "Times New Roman";
-        }
-        #return {
-            text-align: center;
-            font-size: 5vh;
-            border-radius: 1vh;
-            outline: 0.6vh solid black;
-            width: 35vh;
-            color: black;
-            height: 6vh;
-            left: 2vh;
-            bottom: 2vh;
-            background-color: white;
-            position: fixed;
-        }
-        #next {
-            text-align: center;
-            font-size: 5vh;
-            border-radius: 1vh;
-            outline: 0.6vh solid black;
-            width: 15vh;
-            height: 6vh;
-            right: 2vh;
-            bottom: 2vh;
-            background-color: white;
-            position: fixed;
-        }
-        #question {
-            margin-top: -2vh;
-        }
-        .hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        #feedback {
-            margin-top: 10px;
-            font-size: 2.5vh;
-        }
-        .coursespan {
-            transform: translate(-50%, -50%);
-            left: 50%;
-            top: 50%;
-            font-size: 5vh;
-        }
-        .course {
-            width: 20vh;
-            height: 7vh;
-            background-color: black;
-            border-radius: 1vh;
-            text-align: center;
-            color: white;
-            position: absolute;
-            transform: translate(-50%, 0%);
-        }
-        #diagramButton {
-            left: 75%;
-            margin-top: 10vh;
-        }
-        h1 {
-            text-align: center;
-        }
-        p {
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <p id="questioncounter">Question 1:</p>
-    <h1 id="question"></h1>
-    <div id="multiplechoice" class="hidden">
-        <form>
-            <input name="answer" type="radio" id="answerA"><label id="labelA" for="answerA">Answer A</label><br>
-            <input name="answer" type="radio" id="answerB"><label id="labelB" for="answerB">Answer B</label><br>
-            <input name="answer" type="radio" id="answerC"><label id="labelC" for="answerC">Answer C</label><br>
-            <input name="answer" type="radio" id="answerD"><label id="labelD" for="answerD">Answer D</label>
-        </form>
-    </div>
-    <div id="shortanswer" class="hidden">
-        <textarea id="answerblank"></textarea>
-        <div id="a" class="hidden">
-            <span>Correct Answer:<br></span>
-            <span id="aa"></span>
-        </div>
-    </div>
-    <div id="next" onclick="check()">Check</div>
-    <a href="https://jonnybooden.github.io/practiceexamwithhistory/" target="_blank"><div id="return">Return to Home</div></a>
-    <a href="diagram1.html"><div class="course hidden" id="diagramButton"><span class="coursespan">Diagram A</span></div></a>
-
-    <script>
-        let questiontypes = [
-            1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
-        ];
-        let questions = [
-    "What is God's order to multiply, subdue, and have dominion over the earth called?",
-    "Which is not one of the eight characteristics of life?",
-    "What is the theory that all life comes from other life?",
-    "What is the variable that is changed in a controlled experiment?",
-    "What is the variable that is measured in a controlled experiment?",
-    "What is a factor that should be controlled in a controlled experiment measuring the relationship between plant growth and sunlight intake?",
-    "What kind of data is '325kg' an example of?",
-    "What kind of data is 'blue with spots' an example of?",
-    "What kind of data is best used in science?",
-    "What axis does the dependent variable (measured variable) go on in a graph? (Remember DRY MIX)",
-    "What axis does the independent variable (intentionally changed variable) go on in a graph? (Remember DRY MIX)",
-    "What has mass and volume?",
-    "Which is not one of the three atom bonds?",
-    "What is the atomic number of nitrogen?",
-    "What is the atomic mass of nitrogen?",
-    "How many valence electrons does nitrogen have?",
-    "What is polarity? Why is water polar?",
-    "Which is not one of the six properties of water?",
-    "Which is a property of a base?",
-    "Which is a property of an acid?",
-    "What are H+ ions?",
-    "What are OH- ions?",
-    "Which is a solute?",
-    "Which is a solvent?",
-    "Which is not one of the four macromolecules?",
-    "What bonds make up macromolecules?",
-    "Which elements are found in each macromolecule?",
-    "Which macromolecule is responsible for storing genetic information?",
-    "Which macromolecule is used to form bones and muscle?",
-    "Which macromolecule is important for support and quick energy?",
-    "Which macromolecule is used as a chemical messenger?",
-    "Why are enzymes needed?",
-    "Which parts of Diagram B are the active site, substrate, and product?",
-    "Which is not one of the three differences between prokaryotic and eukaryotic cells?",
-    "Which is not one of the four things prokaryotic and eukaryotic cells have in common?",
-    "Which is not one of the three differences between plant cells and animal cells?",
-    "What are the steps of building and transporting proteins (in order)?",
-    "How are phospholipids oriented in the cell membrane?",
-    "What are Osmosis, Diffusion, and Facilitated Diffusion examples of?",
-    "What are Protein Pumps and Bulk Transport examples of?",
-    "What environment do plant cells thrive in, but animal cells swell up and explode in?",
-    "What environment do animal cells thrive in, while plant cells survive but not thrive?",
-    "What environment causes both animal cells and plant cells to lose too much water and die?",
-    "What is another word for maintaining an internal balance?",
-    "What is the ability to do work?",
-    "Where does all energy on earth come from?",
-    "Which is not an example of how cells use ATP?",
-    "Why do cells require ATP?",
-    "Where does the light-independent reaction occur?",
-    "Where does the light-dependent reaction occur?",
-    "Where do autotrophs get energy?",
-    "Where do heterotrophs get energy?",
-    "What is the pigment responsible for photosynthesis?",
-    "What is the chemical equation of photosynthesis?",
-    "Why do plants appear green?",
-    "What products carry over from the light-dependent to the light-independent reactions of photosynthesis?",
-    "How much ATP does aerobic respiration produce?",
-    "How much ATP does anaerobic respiration produce?",
-    "What do the two types of anaerobic respiration produce?",
-    "Which step do both aerobic and anaerobic respiration perform and where is this process found in the cell?",
-    "Which is not one of the three ways cellular respiration and photosynthesis have in common?",
-    "Which is not one of the three major steps of cellular respiration?",
-    "What is the equation for aerobic respiration?",
-    "What is the equation for anaerobic respiration?",
-    "Which is not one of the key differences between sexual and asexual reproduction?",
-    "Which is not one of the reasons cells cannot survive at a larger size?",
-    "Which is not one of the reasons cells need a low surface area to volume ratio to survive?",
-    "Why does chromatin condense into chromosomes before mitosis in eukaryotes?",
-    "What is interphase compared to mitosis?",
-    "Why do cells duplicate their chromosomes before mitosis?",
-    "What is the correct order of the phases of mitosis?",
-    "What happens during prophase?",
-    "What happens during metaphase?",
-    "What happens during anaphase?",
-    "What happens during telophase?",
-    "What are the three phases of interphase?",
-    "Which process occurs directly after mitosis?",
-    "What are cyclins?",
-    "What are cyclin-dependent kinases?",
-    "What do carcinogens do for the cell cycle?",
-    "What is a stem cell?",
-    "What role does DNA play in cell differentiation?",
-    "What is the genetic code for a specific trait?",
-    "What is the expression of a specific trait?",
-    "What is a single gene that codes for a specific trait called?",
-    "Which genotypes regularly code for a dominant phenotype and for a recessive phenotype?",
-    "Also, how are these three genotypes expressed in word form?",
-    "What are the percentages of each phenotype and genotype in Diagram E that could result?",
-    "Which is not an example of codominance?",
-    "Which is not an example of incomplete dominance?",
-    "How does allele dominance work with multiple alleles?",
-    "What are the possible genotypes for individuals II-2, II-3, and III-1 in Diagram F?",
-    "What would the percentages of the possible genotypes and phenotypes be if you crossed a heterozygous A blood type with a heterozygous B blood type (use Diagram G)?",
-    "Which is not an example of a polygenic trait?",
-    "What is NOT an example of the environment changing gene expression?",
-    "Which cell is a non-reproductive, diploid cell?",
-    "Which cell is a reproductive haploid cell?",
-    "What is the process in which homologous chromosomes form tetrads, exchange genes in meiosis prophase 1?",
-    "Which is not one of the three differences between meiosis and mitosis?",
-    "How do the processes of sexual reproduction and crossing over contribute to genetic diversity?",
-    "Which is an example of a sex-linked trait?",
-    "What are four genotypes for individuals regarding sex-linked traits?",
-    "What does each symbol for each individual represent in Diagram H?",
-    "Which is not part of a nucleotide?",
-    "How is the structure of DNA formatted?",
-    "What is the purpose of histones?",
-    "What is the function of helicase?",
-    "What is the function of ligase?",
-    "What is the function of DNA polymerase?",
-    "What is a replication fork?",
-    "Why can DNA replication be described as semi-conservative?",
-    "What is the product of DNA replication?",
-    "Which end of the strand must nucleotides be added to?",
-    "What did Chargaff discover?",
-    "What did Watson, Crick, and Rosalind Franklin discover?",
-    "What phase of interphase involves cells copying their DNA?",
-    "What is the complementary DNA strand for ‘GATCCATT’?",
-    "What is the process of copying a DNA sequence with mRNA?",
-    "What happens to the pre-mRNA sequence before it leaves the cell?",
-    "Are introns or exons non-coding or coding sequences?",
-    "What are the three types of RNA?",
-    "Which is not a difference between DNA and RNA?",
-    "What is the process called when mRNA is read to create proteins?",
-    "Which is not one of the three-base sequences on mRNA and tRNA? Which is a codon? Which is an anticodon?",
-    "Using Diagram I, transcribe the sequence. Then take your new sequence and translate it. Then delete the first base of your mRNA transcription and translate it again in a different reading frame. What amino acids do the two mRNA strands translate to?",
-    "What is a reading frame?",
-    "What does tRNA carry on one side and the other side?",
-    "What is an operon?",
-    "What organisms use operons?",
-    "What will happen if a repressor binds to an operator?",
-    "What are prokaryotic gene expressions controlled by?",
-    "What are eukaryotic gene expressions controlled by?",
-    "What happens to RNA polymerase when transcription factors cause DNA to relax?",
-    "What happens to RNA polymerase when transcription factors cause DNA to coil tightly?",
-    "What are point mutations?",
-    "What are frameshift mutations?",
-    "What disease can be caused by nondisjunction?",
-    "What is the central dogma?",
-    "Which of the following statements are true?",
-    "Which is not an example of environmental factors that can cause epigenetic changes to the cell?",
-    "What are STRs?",
-    "Why are STRs more efficient for DNA fingerprinting than electrophoresis?",
-    "What is PCR?",
-    "What type of strands travel the farthest in gel electrophoresis?",
-    "What are restriction enzymes and what organism do they come from?",
-    "How can a geneticist use restriction enzymes and bacterial plasmids to replicate a gene?",
-    "How does CRISPR-Cas9 work and what is it used for?",
-    "What is a transgenic organism?",
-    "What color would the cloned sheep be according to Diagram J?",
-    "What was Malthus' idea?",
-    "What idea did Hutton and Lyell have?",
-    "Why might finches have different beak shapes according to Darwin?",
-    "Which is NOT one of the three major points of Darwin’s theory?",
-    "What is fitness?",
-    "What are the two components of ‘survival of the fittest’?",
-    "What is biological evolution?",
-    "What is a species?",
-    "What is the recessive allele frequency in Diagram K?",
-    "What is not a main cause of genetic diversity?",
-    "Which is not one of the five conditions for a genetic equilibrium?",
-    "What are the values of p and q in Diagram L?",
-    "What is a gene pool?",
-    "Does natural selection act on genotypes or phenotypes, and why?",
-    "What kind of selection is each graph in Diagram M?",
-    "What is genetic drift?",
-    "What is not an example of a bottleneck effect?",
-    "What is not an example of a founder effect?",
-    "What type of selection occurs when preferred traits are hand-picked to appear in the next generation until a desired organism is produced?",
-    "What type of selection occurs when more ‘fit’ traits appear more frequently in a population due to environmental conditions?",
-    "What are the four types of isolation that lead to speciation?",
-    "What is a barrier that prevents different species from producing fertile offspring before they have bred?",
-    "What is a barrier that prevents different species from producing fertile offspring after they have bred?",
-    "Why was Aristotle’s form of classifying organisms insufficient?",
-    "What was not one of the two contributions that Linnaeus brought to taxonomy?",
-    "Write the scientific name of the organism in Diagram N according to binomial nomenclature?",
-    "Which language was used for binomial nomenclature?",
-    "What are the characteristics of bacteria?",
-    "What are the characteristics of Archaea?",
-    "What are the characteristics of Eukarya?",
-    "Which is the correct order for all taxa from most general to most specific?",
-    "Do amphibians and birds share the trait for an amniotic egg according to Diagram O?",
-    "What is the difference between a phylogenetic tree and an Orchard of Life?",
-    "Which is the correct order of each ecological level of organization from largest to smallest?",
-    "What are the four spheres of the earth?",
-    "What is the difference between climate and weather?",
-    "What is a biome?",
-    "What are the characteristics of each biome using the picture provided in Diagram P?",
-    "What are the two types of aquatic biomes?",
-    "Which of the following statements is true?",
-    "What is the difference between a scavenger and a decomposer?",
-    "Which of Diagram Q’s four food chains is correctly constructed?",
-    "What is a trophic level?",
-    "What kind of organisms do all heterotrophs depend on to survive?",
-    "How is energy transferred in a trophic pyramid?",
-    "What is a biomass pyramid?",
-    "What is a niche?",
-    "What is a fundamental niche?",
-    "What is a realized niche?",
-    "Which of the two organisms in Diagram R is a specialist, and which is a generalist? What is the difference between these two terms?",
-    "What are three types of symbiotic relationships?",
-    "Who would be the predator and who the prey in a cat and mouse relationship?",
-    "What is a limiting factor?",
-    "Which of the following is not an example of a limiting factor inhibiting population growth?",
-    "What is the difference between a density-dependent and a density-independent limiting factor?",
-    "What is the carrying capacity?",
-    "What is a keystone species?",
-    "What is an invasive species?",
-    "What is the main difference between primary and secondary succession?",
-    "How does a pioneer species facilitate ecological succession?"
-];
-
-let answers = [
-    ["Great Commission", "Golden Rule", "Creation Mandate", "Christian Mandate"],
-    ["Made of cells", "Sexual Reproduction", "Have a universal genetic code", "Grow"],
-    ["Biogenesis", "Evolution", "Spontaneous generation", "Succession"],
-    ["Dependent Variable", "Independent Variable", "Control", "Constant"],
-    ["Dependent Variable", "Independent Variable", "Control", "Constant"],
-    ["Type of plant", "Sunlight intake", "Plant Growth", "A Plant With no Sunlight Intake"],
-    ["Descriptive Data", "Conclusive Data", "Qualitative Data", "Quantitative Data"],
-    ["Descriptive Data", "Conclusive Data", "Qualitative Data", "Quantitative Data"],
-    ["Descriptive Data", "Conclusive Data", "Qualitative Data", "Quantitative Data"],
-    ["W axis (north to south)", "X axis (left to right)", "Y axis (up and down)", "Z axis (east to west)"],
-    ["W axis (north to south)", "X axis (left to right)", "Y axis (up and down)", "Z axis (east to west)"],
-    ["Energy", "Light", "Atoms", "Matter"],
-    ["Oxygen bond", "Hydrogen bond", "Ionic bond", "Covalent bond"],
-    ["7", "14.01", "2", "5"],
-    ["7", "14.01", "2", "5"],
-    ["7", "14.01", "2", "5"],
-    ["Uneven charge distribution; due to oxygen's electronegativity", "Even charge distribution; water has equal electron sharing", "No charge; water is neutral", "Positive charge; water has extra protons"],
-    ["Cohesion", "High heat of vaporization", "Conductivity", "Expands when it freezes"],
-    ["Sour taste", "Slippery feel", "Low pH", "Corrosive"],
-    ["Sour taste", "Slippery feel", "High pH", "Neutralizes bases"],
-    ["Hydrogen ions", "Hydroxide ions", "Neutral ions", "Oxygen ions"],
-    ["Hydrogen ions", "Hydroxide ions", "Neutral ions", "Oxygen ions"],
-    ["Substance dissolved in a solvent", "Substance that dissolves a solute", "The resulting solution", "A type of bond"],
-    ["Substance dissolved in a solute", "Substance that dissolves a solute", "The resulting solution", "A type of bond"],
-    ["Carbohydrates", "Lipids", "Proteins", "Vitamins"],
-    ["Ionic bonds", "Covalent bonds", "Hydrogen bonds", "Metallic bonds"],
-    ["C, H, O", "C, H, O, N", "C, H, O, N, P", "C, H, O, N, P, S"],
-    ["Carbohydrates", "Lipids", "Proteins", "Nucleic acids"],
-    ["Carbohydrates", "Lipids", "Proteins", "Nucleic acids"],
-    ["Carbohydrates", "Lipids", "Proteins", "Nucleic acids"],
-    ["Carbohydrates", "Lipids", "Proteins", "Nucleic acids"],
-    ["To speed up chemical reactions", "To store energy", "To transport oxygen", "To synthesize DNA"],
-    ["Active site: enzyme pocket, Substrate: reactant, Product: result", "Active site: product, Substrate: enzyme, Product: reactant", "Active site: reactant, Substrate: product, Product: enzyme", "Active site: enzyme, Substrate: product, Product: reactant"],
-    ["Lack of nucleus", "Size", "Membrane-bound organelles", "DNA structure"],
-    ["DNA", "Cytoplasm", "Ribosomes", "Cell membrane"],
-    ["Cell wall", "Nucleus", "Chloroplasts", "Vacuoles"],
-    ["Transcription, Translation, Folding, Transport", "Replication, Transcription, Translation, Transport", "Translation, Folding, Transport, Secretion", "Transcription, Folding, Transport, Replication"],
-    ["Hydrophilic heads inward, hydrophobic tails outward", "Hydrophilic heads outward, hydrophobic tails inward", "Hydrophobic heads inward, hydrophilic tails outward", "Random orientation"],
-    ["Active transport", "Passive transport", "Bulk transport", "Endocytosis"],
-    ["Active transport", "Passive transport", "Bulk transport", "Osmosis"],
-    ["Hypotonic", "Isotonic", "Hypertonic", "Neutral"],
-    ["Hypotonic", "Isotonic", "Hypertonic", "Neutral"],
-    ["Hypotonic", "Isotonic", "Hypertonic", "Neutral"],
-    ["Homeostasis", "Equilibrium", "Stability", "Balance"],
-    ["Energy", "Force", "Power", "Work"],
-    ["Sun", "Earth’s core", "Fossil fuels", "Wind"],
-    ["DNA synthesis", "Protein synthesis", "Cell division", "Energy storage"],
-    ["To power cellular processes", "To store genetic information", "To synthesize proteins", "To regulate temperature"],
-    ["Stroma", "Thylakoid membrane", "Chloroplast envelope", "Cytoplasm"],
-    ["Stroma", "Thylakoid membrane", "Chloroplast envelope", "Cytoplasm"],
-    ["Sunlight", "Food", "Soil", "Water"],
-    ["Sunlight", "Food", "Soil", "Water"],
-    ["Chlorophyll", "Carotene", "Xanthophyll", "Anthocyanin"],
-    ["6CO2 + 6H2O → C6H12O6 + 6O2", "C6H12O6 + 6O2 → 6CO2 + 6H2O", "6CO2 + 12H2O → C6H12O6 + 6O2", "C6H12O6 + 6H2O → 6CO2 + 6O2"],
-    ["Reflect green light", "Absorb green light", "Reflect red light", "Absorb blue light"],
-    ["ATP and NADPH", "Glucose and O2", "CO2 and H2O", "ADP and NADP+"],
-    ["36-38", "2-4", "12-14", "20-22"],
-    ["2-4", "36-38", "12-14", "20-22"],
-    ["Lactic acid, Ethanol", "Glucose, Oxygen", "Carbon dioxide, Water", "ATP, NADH"],
-    ["Glycolysis, Cytoplasm", "Krebs cycle, Mitochondria", "Electron transport chain, Mitochondria", "Fermentation, Cytoplasm"],
-    ["Produce ATP", "Use electron carriers", "Occur in chloroplasts", "Involve redox reactions"],
-    ["Glycolysis", "Krebs cycle", "Electron transport chain", "Photosynthesis"],
-    ["C6H12O6 + 6O2 → 6CO2 + 6H2O", "6CO2 + 6H2O → C6H12O6 + 6O2", "C6H12O6 → 2C2H5OH + 2CO2", "C6H12O6 → 2C3H6O3"],
-    ["C6H12O6 → 2C2H5OH + 2CO2", "C6H12O6 + 6O2 → 6CO2 + 6H2O", "6CO2 + 6H2O → C6H12O6 + 6O2", "C6H12O6 → 2C3H6O3"],
-    ["Genetic variation", "Number of parents", "Cell division type", "Speed of reproduction"],
-    ["Surface area to volume ratio", "DNA replication rate", "Nutrient diffusion", "Waste removal"],
-    ["High nutrient availability", "Efficient diffusion", "Low surface area", "Cell communication"],
-    ["To organize DNA for division", "To increase DNA replication", "To reduce cell size", "To prevent mutations"],
-    ["Preparation phase", "Division phase", "Resting phase", "Growth phase"],
-    ["To ensure equal genetic distribution", "To increase cell size", "To speed up division", "To prevent mutations"],
-    ["Prophase, Metaphase, Anaphase, Telophase", "Metaphase, Prophase, Telophase, Anaphase", "Anaphase, Telophase, Prophase, Metaphase", "Telophase, Anaphase, Metaphase, Prophase"],
-    ["Chromosomes condense, spindle fibers form", "Chromosomes align at equator", "Chromosomes separate to poles", "Nuclear envelope reforms"],
-    ["Chromosomes align at equator", "Chromosomes condense, spindle fibers form", "Chromosomes separate to poles", "Nuclear envelope reforms"],
-    ["Chromosomes separate to poles", "Chromosomes condense, spindle fibers form", "Chromosomes align at equator", "Nuclear envelope reforms"],
-    ["Nuclear envelope reforms", "Chromosomes condense, spindle fibers form", "Chromosomes align at equator", "Chromosomes separate to poles"],
-    ["G1, S, G2", "G1, G2, M", "S, G2, M", "G1, S, M"],
-    ["Cytokinesis", "Interphase", "DNA replication", "Apoptosis"],
-    ["Regulatory proteins", "Structural proteins", "Enzymes", "Hormones"],
-    ["Enzymes activating cyclins", "Regulatory proteins", "Structural proteins", "Hormones"],
-    ["Disrupt regulation", "Enhance DNA replication", "Prevent cell division", "Promote apoptosis"],
-    ["Undifferentiated cell", "Specialized cell", "Cancer cell", "Dead cell"],
-    ["Determines cell type", "Provides energy", "Regulates cell cycle", "Synthesizes proteins"],
-    ["Allele", "Genotype", "Phenotype", "Chromosome"],
-    ["Phenotype", "Genotype", "Allele", "Chromosome"],
-    ["Allele", "Genotype", "Phenotype", "Chromosome"],
-    ["AA and aa", "Aa and AA", "aa and Aa", "AA and Aa"],
-    ["Homozygous dominant, Heterozygous, Homozygous recessive", "Dominant, Recessive, Codominant", "Homozygous, Heterozygous, Recessive", "Dominant, Heterozygous, Homozygous"],
-    ["25% AA, 50% Aa, 25% aa; 75% dominant, 25% recessive", "50% AA, 50% aa; 50% dominant, 50% recessive", "100% Aa; 100% dominant", "25% AA, 75% aa; 25% dominant, 75% recessive"],
-    ["Blood type AB", "Roan cattle", "Sickle-cell anemia", "Height"],
-    ["Pink flowers", "Roan cattle", "Blood type AB", "Curly hair"],
-    ["One allele masks others", "All alleles are expressed", "Alleles blend together", "No allele is dominant"],
-    ["Aa, Aa, aa", "AA, Aa, AA", "aa, aa, Aa", "AA, AA, aa"],
-    ["25% AB, 25% A, 25% B, 25% O; 25% IᵃIᵇ, 25% Iᵃi, 25% Iᵇi, 25% ii", "50% AB, 50% O; 50% IᵃIᵇ, 50% ii", "100% AB; 100% IᵃIᵇ", "25% A, 75% B; 25% Iᵃi, 75% Iᵇi"],
-    ["Eye color", "Height", "Blood type", "Skin color"],
-    ["Temperature", "Diet", "DNA sequence", "Light exposure"],
-    ["Somatic cell", "Gamete", "Zygote", "Embryonic cell"],
-    ["Somatic cell", "Gamete", "Zygote", "Embryonic cell"],
-    ["Crossing over", "Independent assortment", "Segregation", "Mutation"],
-    ["Number of divisions", "Cell type", "Chromosome number", "DNA replication"],
-    ["Increase variation", "Reduce variation", "Maintain variation", "Eliminate variation"],
-    ["Color blindness", "Height", "Eye color", "Blood type"],
-    ["XᴬXᴬ, XᴬXᵃ, XᵃY, XᴬY", "XX, XY, YY, XX", "XᴬXᴬ, XᴬY, XᵃY, YY", "XᴬXᵃ, XᴬY, XᵃXᵃ, YY"],
-    ["Square: male, Circle: female", "Square: female, Circle: male", "Square: carrier, Circle: affected", "Square: affected, Circle: carrier"],
-    ["Sugar", "Phosphate", "Nitrogenous base", "Amino acid"],
-    ["Double helix", "Single strand", "Triple helix", "Circular"],
-    ["Package DNA", "Synthesize DNA", "Transport DNA", "Repair DNA"],
-    ["Unwinds DNA", "Joins DNA", "Synthesizes DNA", "Repairs DNA"],
-    ["Joins DNA", "Unwinds DNA", "Synthesizes DNA", "Repairs DNA"],
-    ["Synthesizes DNA", "Unwinds DNA", "Joins DNA", "Repairs DNA"],
-    ["Y-shaped region", "DNA loop", "Chromosome end", "Protein complex"],
-    ["One old, one new strand", "Both new strands", "Both old strands", "No strands conserved"],
-    ["Two identical DNA molecules", "Single DNA molecule", "mRNA molecule", "Protein"],
-    ["3’ end", "5’ end", "Both ends", "Neither end"],
-    ["Equal base pairing", "DNA structure", "DNA replication", "Protein synthesis"],
-    ["DNA double helix", "Base pairing rules", "DNA replication", "Protein synthesis"],
-    ["S phase", "G1 phase", "G2 phase", "M phase"],
-    ["CTAGGTAA", "GATCCATT", "TAGGCTAA", "ATTCCTAG"],
-    ["Transcription", "Translation", "Replication", "Mutation"],
-    ["Splicing removes introns", "Splicing removes exons", "Polyadenylation removes introns", "Capping removes exons"],
-    ["Introns: non-coding, Exons: coding", "Introns: coding, Exons: non-coding", "Both non-coding", "Both coding"],
-    ["mRNA, tRNA, rRNA", "mRNA, tRNA, snRNA", "rRNA, tRNA, miRNA", "mRNA, rRNA, siRNA"],
-    ["Sugar type", "Double-stranded", "Base types", "Function"],
-    ["Translation", "Transcription", "Replication", "Splicing"],
-    ["Codon: mRNA, Anticodon: tRNA, Intron: neither", "Codon: tRNA, Anticodon: mRNA, Intron: neither", "Codon: mRNA, Anticodon: tRNA, Exon: neither", "Codon: tRNA, Anticodon: mRNA, Exon: neither"],
-    ["Varies by Diagram I", "Same amino acids", "No amino acids", "Random amino acids"],
-    ["Sequence of codons", "DNA strand", "tRNA molecule", "Protein chain"],
-    ["Anticodon, Amino acid", "Codon, Protein", "Anticodon, Sugar", "Codon, Amino acid"],
-    ["Gene regulation unit", "Protein complex", "DNA segment", "RNA molecule"],
-    ["Prokaryotes", "Eukaryotes", "Both", "Neither"],
-    ["Blocks transcription", "Enhances transcription", "Synthesizes DNA", "Repairs DNA"],
-    ["Operons", "Transcription factors", "Enhancers", "Promoters"],
-    ["Transcription factors", "Operons", "Repressors", "Operators"],
-    ["Initiates transcription", "Blocks transcription", "Synthesizes DNA", "Repairs DNA"],
-    ["Blocks transcription", "Initiates transcription", "Synthesizes DNA", "Repairs DNA"],
-    ["Single base change", "Base pair insertion", "Base pair deletion", "Chromosome duplication"],
-    ["Base insertion or deletion", "Single base change", "Chromosome duplication", "Gene amplification"],
-    ["Down syndrome", "Sickle-cell anemia", "Cystic fibrosis", "Hemophilia"],
-    ["DNA to RNA to protein", "RNA to DNA to protein", "DNA to protein to RNA", "Protein to DNA to RNA"],
-    ["Varies by options", "All true", "None true", "Some true"],
-    ["Diet", "Temperature", "DNA sequence", "Stress"],
-    ["Short tandem repeats", "Single nucleotide polymorphisms", "Restriction sites", "Gene segments"],
-    ["Unique patterns", "Faster results", "Less DNA needed", "Simpler process"],
-    ["Amplifies DNA", "Synthesizes protein", "Edits genes", "Sequences DNA"],
-    ["Shortest strands", "Longest strands", "Single-stranded", "Double-stranded"],
-    ["Cut DNA, Bacteria", "Synthesize DNA, Viruses", "Repair DNA, Fungi", "Amplify DNA, Plants"],
-    ["Insert gene into plasmid", "Cut plasmid with ligase", "Synthesize gene directly", "Amplify gene with PCR"],
-    ["Edits genes, Gene therapy", "Amplifies DNA, Sequencing", "Synthesizes protein, Cloning", "Repairs DNA, Diagnostics"],
-    ["Organism with foreign genes", "Cloned organism", "Mutated organism", "Hybrid organism"],
-    ["Varies by Diagram J", "White", "Black", "Brown"],
-    ["Population growth outpaces resources", "Natural selection", "Uniformitarianism", "Gradualism"],
-    ["Uniformitarianism", "Natural selection", "Population growth", "Catastrophism"],
-    ["Adaptation to food sources", "Random mutation", "Genetic drift", "Gene flow"],
-    ["Variation exists", "Overproduction of offspring", "Constant population size", "Struggle for survival"],
-    ["Reproductive success", "Physical strength", "Survival rate", "Genetic diversity"],
-    ["Survival, Reproduction", "Strength, Speed", "Mutation, Variation", "Adaptation, Selection"],
-    ["Change in species over time", "Change in individual traits", "Change in environment", "Change in population size"],
-    ["Reproductively isolated group", "Genetically identical group", "Physically similar group", "Geographically close group"],
-    ["Varies by Diagram K", "0.5", "0.25", "0.75"],
-    ["Mutation", "Gene flow", "Natural selection", "Genetic equilibrium"],
-    ["Random mating", "Large population", "Mutation", "No migration"],
-    ["Varies by Diagram L", "p=0.5, q=0.5", "p=0.7, q=0.3", "p=0.2, q=0.8"],
-    ["All alleles in a population", "All genes in an individual", "All traits in a population", "All phenotypes in an individual"],
-    ["Phenotypes, observable traits", "Genotypes, genetic code", "Phenotypes, genetic code", "Genotypes, observable traits"],
-    ["Varies by Diagram M", "Directional, Stabilizing, Disruptive", "Natural, Artificial, Sexual", "Random, Selective, Neutral"],
-    ["Random allele frequency change", "Directional selection", "Gene flow", "Natural selection"],
-    ["Volcanic eruption", "Disease outbreak", "Hunting", "Migration"],
-    ["Island colonization", "Population bottleneck", "Small group migration", "New species formation"],
-    ["Artificial selection", "Natural selection", "Sexual selection", "Disruptive selection"],
-    ["Natural selection", "Artificial selection", "Sexual selection", "Disruptive selection"],
-    ["Geographic, Temporal, Behavioral, Reproductive", "Genetic, Ecological, Physical, Chemical", "Morphological, Physiological, Behavioral, Genetic", "Temporal, Spatial, Chemical, Biological"],
-    ["Prezygotic barrier", "Postzygotic barrier", "Genetic barrier", "Physical barrier"],
-    ["Postzygotic barrier", "Prezygotic barrier", "Genetic barrier", "Physical barrier"],
-    ["Too simplistic", "Too complex", "Based on genetics", "Used binomial nomenclature"],
-    ["Binomial nomenclature", "Hierarchical classification", "Phylogenetic trees", "Common ancestry"],
-    ["Varies by Diagram N", "Homo sapiens", "Canis lupus", "Felis catus"],
-    ["Latin", "Greek", "English", "French"],
-    ["Prokaryotic, Unicellular, Cell wall", "Eukaryotic, Multicellular, No cell wall", "Prokaryotic, Multicellular, No cell wall", "Eukaryotic, Unicellular, Cell wall"],
-    ["Prokaryotic, Extreme environments", "Eukaryotic, Multicellular", "Prokaryotic, Photosynthetic", "Eukaryotic, Unicellular"],
-    ["Eukaryotic, Nucleus, Organelles", "Prokaryotic, No nucleus, Unicellular", "Eukaryotic, No organelles, Unicellular", "Prokaryotic, Nucleus, Multicellular"],
-    ["Domain, Kingdom, Phylum, Class, Order, Family, Genus, Species", "Kingdom, Phylum, Class, Order, Family, Genus, Species, Domain", "Species, Genus, Family, Order, Class, Phylum, Kingdom, Domain", "Domain, Species, Genus, Family, Order, Class, Phylum, Kingdom"],
-    ["Yes", "No", "Varies by Diagram O", "Sometimes"],
-    ["Tree: linear, Orchard: networked", "Tree: networked, Orchard: linear", "Tree: genetic, Orchard: phenotypic", "Tree: phenotypic, Orchard: genetic"],
-    ["Biosphere, Ecosystem, Community, Population, Organism", "Ecosystem, Community, Population, Organism, Biosphere", "Organism, Population, Community, Ecosystem, Biosphere", "Biosphere, Organism, Population, Community, Ecosystem"],
-    ["Geosphere, Hydrosphere, Atmosphere, Biosphere", "Lithosphere, Cryosphere, Magnetosphere, Biosphere", "Geosphere, Hydrosphere, Atmosphere, Cryosphere", "Lithosphere, Hydrosphere, Biosphere, Magnetosphere"],
-    ["Climate: long-term, Weather: short-term", "Climate: short-term, Weather: long-term", "Climate: local, Weather: global", "Climate: global, Weather: local"],
-    ["Region with distinct climate and organisms", "Region with similar species", "Region with same climate", "Region with same species"],
-    ["Varies by Diagram P", "Tundra: cold, Desert: dry", "Forest: wet, Grassland: temperate", "All biomes: similar climate"],
-    ["Marine, Freshwater", "Oceanic, Terrestrial", "Estuarine, Coastal", "Pelagic, Benthic"],
-    ["Varies by options", "All true", "None true", "Some true"],
-    ["Scavenger: eats dead animals, Decomposer: breaks down organic matter", "Scavenger: breaks down organic matter, Decomposer: eats dead animals", "Scavenger: eats plants, Decomposer: eats animals", "Scavenger: synthesizes food, Decomposer: recycles nutrients"],
-    ["Varies by Diagram Q", "Chain 1", "Chain 2", "Chain 3"],
-    ["Feeding level in food chain", "Energy level in ecosystem", "Population level in community", "Species level in biome"],
-    ["Autotrophs", "Heterotrophs", "Decomposers", "Scavengers"],
-    ["10% to next level", "50% to next level", "100% to next level", "1% to next level"],
-    ["Mass of organisms at each trophic level", "Energy at each trophic level", "Number of organisms at each trophic level", "Species diversity at each trophic level"],
-    ["Organism’s role in ecosystem", "Organism’s habitat", "Organism’s diet", "Organism’s population"],
-    ["All possible roles", "Actual role", "Genetic role", "Physical role"],
-    ["Actual role", "All possible roles", "Genetic role", "Physical role"],
-    ["Varies by Diagram R; Specialist: narrow niche, Generalist: broad niche", "Specialist: broad niche, Generalist: narrow niche", "Both specialists", "Both generalists"],
-    ["Mutualism, Commensalism, Parasitism", "Predation, Competition, Cooperation", "Symbiosis, Mutualism, Competition", "Parasitism, Predation, Commensalism"],
-    ["Cat: predator, Mouse: prey", "Cat: prey, Mouse: predator", "Both predators", "Both prey"],
-    ["Resource that restricts population growth", "Factor that increases population", "Environmental condition", "Genetic factor"],
-    ["Sunlight", "Food availability", "Predation", "Space"],
-    ["Dependent: population size, Independent: external factors", "Dependent: external factors, Independent: population size", "Both population size", "Both external factors"],
-    ["Maximum population size", "Minimum population size", "Average population size", "Stable population size"],
-    ["Critical ecosystem species", "Dominant species", "Invasive species", "Endangered species"],
-    ["Non-native disruptive species", "Native beneficial species", "Endangered species", "Keystone species"],
-    ["Primary: no soil, Secondary: existing soil", "Primary: existing soil, Secondary: no soil", "Primary: fast, Secondary: slow", "Primary: slow, Secondary: fast"],
-    ["Prepares environment for other species", "Competes with other species", "Reduces biodiversity", "Increases competition"]
-];
-        ];
-            let correctanswers = [3,2,1,2,1,1,4,3,4,3,2,4,1,1,2,4,1,3,2,1,1,2,1,2,4,2,3,4,3,1,3,1,1,4,2,2,1,2,2,1,1,2,3,1,1,1,4,1,1,2,1,2,1,1,1,1,1,1,1,1,3,4,1,1,4,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,4,4,2,1,1,3,3,1,2,1,1,1,1,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,4,3,1,1,1,1,4,1,2,3,1,2,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-       ];
-        // Fisher-Yates shuffle helper
-function shuffle(array) {
-    let arr = array.slice();
-    for (let i = arr.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-}
-
-// Store a randomized version of answers, and the correct index for each question
-let randomizedAnswers = [];
-let randomizedCorrectIndexes = [];
-
-function prepareRandomizedAnswers() {
-    randomizedAnswers = [];
-    randomizedCorrectIndexes = [];
-    for (let i = 0; i < questions.length; i++) {
-        if (questiontypes[i] === 1) {
-            let original = answers[i];
-            let correct = correctanswers[i];
-            let originalWithIndexes = original.map((ans, idx) => ({ ans, idx }));
-            let shuffled = shuffle(originalWithIndexes);
-            randomizedAnswers[i] = shuffled.map(obj => obj.ans);
-            let newCorrectIdx = shuffled.findIndex(obj => obj.idx === correct);
-            randomizedCorrectIndexes[i] = newCorrectIdx;
-        } else {
-            randomizedAnswers[i] = answers[i];
-            randomizedCorrectIndexes[i] = correctanswers[i];
-        }
-    }
-}
-        let cq = 0;
-        let numcorrect = 0;
-        const letters = ["A", "B", "C", "D"];
-
-        resizeall();
-        window.addEventListener("resize", resizeall);
-        function resizeall() {
-            const width = Math.max(100, window.innerWidth - window.innerHeight * 0.025);
-            document.getElementById("answerblank").style.width = width + "px";
-            document.getElementById("answerblank").style.top = (document.getElementById("question").offsetHeight + window.innerHeight * 0.05) + "px";
-            document.getElementById("a").style.width = width + "px";
-            document.getElementById("a").style.top = (document.getElementById("question").offsetHeight + document.getElementById("answerblank").offsetHeight + window.innerHeight * 0.06) + "px";
-        }
-
-        function shuffle(array) {
-            let arr = array.slice();
-            for (let i = arr.length - 1; i > 0; i--) {
-                let j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
-
-        // Store a randomized version of answers, and the correct index for each question
-        let randomizedAnswers = [];
-        let randomizedCorrectIndexes = [];
-
-        function prepareRandomizedAnswers() {
-            randomizedAnswers = [];
-            randomizedCorrectIndexes = [];
-            for (let i = 0; i < questions.length; i++) {
-                if (questiontypes[i] === 1) {
-                    let original = answers[i];
-                    let correct = correctanswers[i] - 1; // convert 1-based to 0-based
-                    let originalWithIndexes = original.map((ans, idx) => ({ ans, idx }));
-                    let shuffled = shuffle(originalWithIndexes);
-                    randomizedAnswers[i] = shuffled.map(obj => obj.ans);
-                    let newCorrectIdx = shuffled.findIndex(obj => obj.idx === correct);
-                    randomizedCorrectIndexes[i] = newCorrectIdx;
-                } else {
-                    randomizedAnswers[i] = answers[i];
-                    randomizedCorrectIndexes[i] = correctanswers[i] - 1;
-                }
-            }
-        }
-
-        let cq = 0;
-        let numcorrect = 0;
-        const letters = ["A", "B", "C", "D"];
-
-        resizeall();
-        window.addEventListener("resize", resizeall);
-        function resizeall() {
-            const width = Math.max(100, window.innerWidth - window.innerHeight * 0.025);
-            document.getElementById("answerblank").style.width = width + "px";
-            document.getElementById("answerblank").style.top = (document.getElementById("question").offsetHeight + window.innerHeight * 0.05) + "px";
-            document.getElementById("a").style.width = width + "px";
-            document.getElementById("a").style.top = (document.getElementById("question").offsetHeight + document.getElementById("answerblank").offsetHeight + window.innerHeight * 0.06) + "px";
-        }
-
-        prepareRandomizedAnswers();
-        startOfGame();
-
-        function startOfGame() {
-            document.getElementById("question").innerHTML = questions[cq];
-            updateButtonVisibility();
-            if (questiontypes[cq] == 1) {
-                document.getElementById("multiplechoice").classList.remove("hidden");
-                document.getElementById("shortanswer").classList.add("hidden");
-                for (let i = 0; i < 4; i++) {
-                    document.getElementById("label" + letters[i]).innerHTML = randomizedAnswers[cq][i];
-                    document.getElementById("label" + letters[i]).style.color = "black";
-                    document.getElementById("answer" + letters[i]).checked = false;
-                }
-            } else {
-                document.getElementById("shortanswer").classList.remove("hidden");
-                document.getElementById("multiplechoice").classList.add("hidden");
-                document.getElementById("answerblank").style.color = "black";
-                document.getElementById("a").classList.add("hidden");
-                document.getElementById("answerblank").value = "";
-            }
-            let feedback = document.getElementById("feedback");
-            if (feedback) feedback.remove();
-            document.getElementById("next").innerHTML = "Check";
-            document.getElementById("next").setAttribute("onclick", `check()`);
-        }
-
-        function updateButtonVisibility() {
-            // Show diagram button and hide next button only for question 13 (cq == 12)
-            if (cq == 13) {
-                document.getElementById("diagramButton").classList.remove("hidden");
-                document.getElementById("next").style.display = "none";
-            } else {
-                document.getElementById("diagramButton").classList.add("hidden");
-                document.getElementById("next").style.display = "block";
-            }
-        }
-
-        function endgame() {
-            localStorage.setItem("nc", numcorrect);
-            localStorage.setItem("tq", cq);
-            window.location.href = "biologyresults.html";
-        }
-
-        function check() {
-            let checked = false;
-            let feedback = document.createElement("div");
-            feedback.id = "feedback";
-            if (questiontypes[cq] == 1) {
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biology Exam Review</title>
-    <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 2vh;
+            margin: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
         #con {
-            background-color: black;
+            background-color: #333;
             color: white;
-            border-radius: 1vh;
-            padding: 1vh;
-            margin-top: 2vh;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
         }
         #aa {
             font-weight: bold;
         }
         #a {
-            font-size: 2.5vh;
+            font-size: 1.5rem;
             font-family: "Times New Roman", Times, serif;
-            margin-top: 1vh;
+            margin-top: 10px;
         }
         #answerblank {
             width: 100%;
-            height: 20vh;
-            font-size: 2.5vh;
+            height: 150px;
+            font-size: 1.5rem;
             font-family: "Times New Roman", Times, serif;
             resize: vertical;
+            margin-top: 10px;
+        }
+        #return, #next {
+            text-align: center;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: 2px solid #333;
+            padding: 10px;
+            background-color: white;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            line-height: 1.5;
         }
         #return {
-            text-align: center;
-            font-size: 3vh;
-            border-radius: 1vh;
-            border: 0.3vh solid black;
-            width: 30%;
-            color: black;
-            height: 5vh;
-            line-height: 5vh;
-            left: 2vh;
-            bottom: 2vh;
-            background-color: white;
-            position: fixed;
-            cursor: pointer;
+            left: 20px;
+            width: 150px;
         }
         #next {
-            text-align: center;
-            font-size: 3vh;
-            border-radius: 1vh;
-            border: 0.3vh solid black;
-            width: 15%;
-            height: 5vh;
-            line-height: 5vh;
-            right: 2vh;
-            bottom: 2vh;
-            background-color: white;
-            position: fixed;
-            cursor: pointer;
+            right: 20px;
+            width: 100px;
         }
         #question {
-            margin-top: 1vh;
+            margin-top: 10px;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+        #questioncounter {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
         }
         .hidden {
             display: none;
         }
         #feedback {
-            margin-top: 1vh;
-            font-size: 2.5vh;
+            margin-top: 15px;
+            font-size: 1.2rem;
+            text-align: center;
         }
         .coursespan {
             position: absolute;
             transform: translate(-50%, -50%);
             left: 50%;
             top: 50%;
-            font-size: 3vh;
+            font-size: 1.2rem;
         }
         .course {
-            width: 20vh;
-            height: 7vh;
-            background-color: black;
-            border-radius: 1vh;
+            width: 150px;
+            height: 50px;
+            background-color: #333;
+            border-radius: 8px;
             text-align: center;
             color: white;
             position: absolute;
-            transform: translate(-50%, 0%);
+            transform: translate(-50%, 0);
             cursor: pointer;
-        }
-        #diagramButton {
+            margin-top: 20px;
             left: 50%;
-            margin-top: 10vh;
         }
         h1 {
             text-align: center;
-            font-size: 3.5vh;
+            font-size: 2rem;
         }
         p {
             text-align: center;
+        }
+        .radio-label {
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+        .radio-option {
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
     <p id="questioncounter">Question 1:</p>
     <h1 id="question"></h1>
-    <div id="multiplechoice" class="hidden">
+    <div id="multiplechoice">
         <form>
-            <input name="answer" type="radio" id="answerA"><label id="labelA" for="answerA">Answer A</label><br>
-            <input name="answer" type="radio" id="answerB"><label id="labelB" for="answerB">Answer B</label><br>
-            <input name="answer" type="radio" id="answerC"><label id="labelC" for="answerC">Answer C</label><br>
-            <input name="answer" type="radio" id="answerD"><label id="labelD" for="answerD">Answer D</label>
+            <div class="radio-option">
+                <input name="answer" type="radio" id="answerA"><label class="radio-label" id="labelA" for="answerA">Answer A</label>
+            </div>
+            <div class="radio-option">
+                <input name="answer" type="radio" id="answerB"><label class="radio-label" id="labelB" for="answerB">Answer B</label>
+            </div>
+            <div class="radio-option">
+                <input name="answer" type="radio" id="answerC"><label class="radio-label" id="labelC" for="answerC">Answer C</label>
+            </div>
+            <div class="radio-option">
+                <input name="answer" type="radio" id="answerD"><label class="radio-label" id="labelD" for="answerD">Answer D</label>
+            </div>
         </form>
-    </div>
-    <div id="shortanswer" class="hidden">
-        <textarea id="answerblank"></textarea>
-        <div id="a" class="hidden">
-            <span>Correct Answer:<br></span>
-            <span id="aa"></span>
-        </div>
     </div>
     <div id="next" onclick="check()">Check</div>
     <a href="https://jonnybooden.github.io/practiceexamwithhistory/" target="_blank"><div id="return">Return to Home</div></a>
     <a href="diagram1.html"><div class="course hidden" id="diagramButton"><span class="coursespan">Diagram A</span></div></a>
 
     <script>
-        let questiontypes = [
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-        ];
+        let questiontypes = Array(200).fill(1); // All questions are multiple-choice
         let questions = [
             "What is God's order to multiply, subdue, and have dominion over the earth called?",
             "Which is not one of the eight characteristics of life?",
@@ -887,7 +208,7 @@ function prepareRandomizedAnswers() {
             "What is the correct order of the phases of mitosis?",
             "What happens during prophase?",
             "What happens during metaphase?",
-            "What happens during an Ors?",
+            "What happens during anaphase?",
             "What happens during telophase?",
             "What are the three phases of interphase?",
             "Which process occurs directly after mitosis?",
@@ -918,7 +239,7 @@ function prepareRandomizedAnswers() {
             "What are four genotypes for individuals regarding sex-linked traits?",
             "What does each symbol for each individual represent in Diagram H?",
             "Which is not part of a nucleotide?",
-            "How is the structure of DNA formatted?",
+            "How is the structure formatted?",
             "What is the purpose of histones?",
             "What is the function of helicase?",
             "What is the function of ligase?",
@@ -1149,7 +470,7 @@ function prepareRandomizedAnswers() {
             ["Sugar type", "Double-stranded", "Base types", "Function"],
             ["Translation", "Transcription", "Replication", "Splicing"],
             ["Codon: mRNA, Anticodon: tRNA, Intron: neither", "Codon: tRNA, Anticodon: mRNA, Intron: neither", "Codon: mRNA, Anticodon: tRNA, Exon: neither", "Codon: tRNA, Anticodon: mRNA, Exon: neither"],
-            ["Varies by Diagram I", "Same amino acids", "No amino acids", "Random amino acids"],
+            ["Depends on Diagram I sequence", "Same amino acids for both", "No amino acids produced", "Random amino acids for both"],
             ["Sequence of codons", "DNA strand", "tRNA molecule", "Protein chain"],
             ["Anticodon, Amino acid", "Codon, Protein", "Anticodon, Sugar", "Codon, Amino acid"],
             ["Gene regulation unit", "Protein complex", "DNA segment", "RNA molecule"],
@@ -1236,14 +557,14 @@ function prepareRandomizedAnswers() {
             ["Prepares environment for other species", "Competes with other species", "Reduces biodiversity", "Increases competition"]
         ];
         let correctanswers = [
-            2, 1, 0, 1, 0, 0, 3, 2, 3, 2, 1, 3, 0, 0, 1, 3, 0, 2, 1, 0, 
-            0, 1, 0, 1, 3, 1, 2, 3, 2, 0, 2, 0, 0, 3, 1, 1, 0, 1, 1, 0, 
-            0, 1, 2, 0, 0, 0, 3, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 
-            2, 3, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-            0, 0, 1, 0, 0, 3, 3, 1, 0, 0, 2, 2, 0, 1, 0, 0, 0, 3, 0, 0, 
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+            2, 1, 0, 1, 0, 0, 3, 2, 3, 2, 1, 3, 0, 0, 1, 3, 0, 2, 1, 0,
+            0, 1, 0, 1, 3, 1, 2, 3, 2, 0, 2, 0, 0, 3, 1, 1, 0, 1, 1, 0,
+            0, 1, 2, 0, 0, 0, 3, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+            2, 3, 0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 3, 3, 1, 0, 0, 2, 2, 0, 1, 0, 0, 0, 3, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         ];
 
@@ -1257,7 +578,29 @@ function prepareRandomizedAnswers() {
             return arr;
         }
 
-        // Store a randomized version of answers, and the correct index for each question
+        // Shuffle questions and related arrays
+        function shuffleQuestions() {
+            const indices = Array.from({ length: questions.length }, (_, i) => i);
+            const shuffledIndices = shuffle(indices);
+            const newQuestions = [];
+            const newQuestionTypes = [];
+            const newAnswers = [];
+            const newCorrectAnswers = [];
+            for (let i = 0; i < questions.length; i++) {
+                const idx = shuffledIndices[i];
+                newQuestions[i] = questions[idx];
+                newQuestionTypes[i] = questiontypes[idx];
+                newAnswers[i] = answers[idx];
+                newCorrectAnswers[i] = correctanswers[idx];
+            }
+            questions = newQuestions;
+            questiontypes = newQuestionTypes;
+            answers = newAnswers;
+            correctanswers = newCorrectAnswers;
+            return shuffledIndices;
+        }
+
+        // Store randomized answers and correct indices
         let randomizedAnswers = [];
         let randomizedCorrectIndexes = [];
 
@@ -1265,18 +608,13 @@ function prepareRandomizedAnswers() {
             randomizedAnswers = [];
             randomizedCorrectIndexes = [];
             for (let i = 0; i < questions.length; i++) {
-                if (questiontypes[i] === 1) {
-                    let original = answers[i];
-                    let correct = correctanswers[i];
-                    let originalWithIndexes = original.map((ans, idx) => ({ ans, idx }));
-                    let shuffled = shuffle(originalWithIndexes);
-                    randomizedAnswers[i] = shuffled.map(obj => obj.ans);
-                    let newCorrectIdx = shuffled.findIndex(obj => obj.idx === correct);
-                    randomizedCorrectIndexes[i] = newCorrectIdx;
-                } else {
-                    randomizedAnswers[i] = answers[i];
-                    randomizedCorrectIndexes[i] = correctanswers[i];
-                }
+                let original = answers[i];
+                let correct = correctanswers[i];
+                let originalWithIndexes = original.map((ans, idx) => ({ ans, idx }));
+                let shuffled = shuffle(originalWithIndexes);
+                randomizedAnswers[i] = shuffled.map(obj => obj.ans);
+                let newCorrectIdx = shuffled.findIndex(obj => obj.idx === correct);
+                randomizedCorrectIndexes[i] = newCorrectIdx;
             }
         }
 
@@ -1285,38 +623,62 @@ function prepareRandomizedAnswers() {
         const letters = ["A", "B", "C", "D"];
 
         function resizeall() {
-            const width = Math.max(100, window.innerWidth - window.innerHeight * 0.025);
-            const questionHeight = document.getElementById("question").offsetHeight;
-            const answerblank = document.getElementById("answerblank");
-            const answerDiv = document.getElementById("a");
-            answerblank.style.width = width + "px";
-            answerblank.style.top = (questionHeight + window.innerHeight * 0.05) + "px";
-            answerDiv.style.width = width + "px";
-            answerDiv.style.top = (questionHeight + answerblank.offsetHeight + window.innerHeight * 0.06) + "px";
+            const width = Math.max(100, window.innerWidth - window.innerHeight * 0.05);
+            document.getElementById("multiplechoice").style.width = `${width}px`;
         }
 
         window.addEventListener("resize", resizeall);
 
-        prepareRandomizedAnswers();
-        startOfGame();
+        // Initialize game state
+        function initializeGame() {
+            // Check if there's a saved game state
+            const savedIndices = localStorage.getItem("shuffledIndices");
+            const savedCq = localStorage.getItem("cq");
+            const savedNumCorrect = localStorage.getItem("nc");
+
+            if (savedIndices && savedCq !== null) {
+                // Restore saved state
+                const indices = JSON.parse(savedIndices);
+                const newQuestions = [];
+                const newQuestionTypes = [];
+                const newAnswers = [];
+                const newCorrectAnswers = [];
+                for (let i = 0; i < questions.length; i++) {
+                    const idx = indices[i];
+                    newQuestions[i] = questions[idx];
+                    newQuestionTypes[i] = questiontypes[idx];
+                    newAnswers[i] = answers[idx];
+                    newCorrectAnswers[i] = correctanswers[idx];
+                }
+                questions = newQuestions;
+                questiontypes = newQuestionTypes;
+                answers = newAnswers;
+                correctanswers = newCorrectAnswers;
+                cq = parseInt(savedCq);
+                numcorrect = parseInt(savedNumCorrect) || 0;
+            } else {
+                // New game: shuffle questions and save indices
+                const shuffledIndices = shuffleQuestions();
+                localStorage.setItem("shuffledIndices", JSON.stringify(shuffledIndices));
+                localStorage.setItem("cq", cq);
+                localStorage.setItem("nc", numcorrect);
+            }
+
+            prepareRandomizedAnswers();
+            startOfGame();
+        }
+
+        initializeGame();
 
         function startOfGame() {
+            document.getElementById("questioncounter").innerHTML = `Question ${cq + 1}:`;
             document.getElementById("question").innerHTML = questions[cq];
             updateButtonVisibility();
-            if (questiontypes[cq] === 1) {
-                document.getElementById("multiplechoice").classList.remove("hidden");
-                document.getElementById("shortanswer").classList.add("hidden");
-                for (let i = 0; i < 4; i++) {
-                    document.getElementById("label" + letters[i]).innerHTML = randomizedAnswers[cq][i];
-                    document.getElementById("label" + letters[i]).style.color = "black";
-                    document.getElementById("answer" + letters[i]).checked = false;
-                }
-            } else {
-                document.getElementById("shortanswer").classList.remove("hidden");
-                document.getElementById("multiplechoice").classList.add("hidden");
-                document.getElementById("answerblank").style.color = "black";
-                document.getElementById("a").classList.add("hidden");
-                document.getElementById("answerblank").value = "";
+            document.getElementById("multiplechoice").classList.remove("hidden");
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`label${letters[i]}`).innerHTML = randomizedAnswers[cq][i];
+                document.getElementById(`label${letters[i]}`).style.color = "black";
+                document.getElementById(`answer${letters[i]}`).checked = false;
             }
             const feedback = document.getElementById("feedback");
             if (feedback) feedback.remove();
@@ -1325,10 +687,10 @@ function prepareRandomizedAnswers() {
         }
 
         function updateButtonVisibility() {
-            // Show diagram button for question 33 (index 32) about Diagram B
             const diagramButton = document.getElementById("diagramButton");
             const nextButton = document.getElementById("next");
-            if (cq === 32) {
+            // Show diagram button for the question about Diagram B
+            if (questions[cq] === "Which parts of Diagram B are the active site, substrate, and product?") {
                 diagramButton.classList.remove("hidden");
                 nextButton.style.display = "none";
             } else {
@@ -1340,6 +702,8 @@ function prepareRandomizedAnswers() {
         function endgame() {
             localStorage.setItem("nc", numcorrect);
             localStorage.setItem("tq", cq);
+            localStorage.removeItem("shuffledIndices");
+            localStorage.removeItem("cq");
             window.location.href = "biologyresults.html";
         }
 
@@ -1347,69 +711,40 @@ function prepareRandomizedAnswers() {
             let checked = false;
             const feedback = document.createElement("div");
             feedback.id = "feedback";
-            if (questiontypes[cq] === 1) {
-                for (let i = 0; i < 4; i++) {
-                    if (document.getElementById("answer" + letters[i]).checked) {
-                        checked = true;
-                        break;
-                    }
-                }
-                if (checked) {
-                    for (let i = 0; i < 4; i++) {
-                        const label = document.getElementById("label" + letters[i]);
-                        label.style.color = "red";
-                        if (document.getElementById("answer" + letters[i]).checked) {
-                            label.style.color = "#ff6600";
-                            if (i === randomizedCorrectIndexes[cq]) {
-                                numcorrect++;
-                                feedback.innerHTML = "Correct!";
-                                feedback.style.color = "green";
-                            } else {
-                                feedback.innerHTML = "Incorrect. The correct answer is: " + randomizedAnswers[cq][randomizedCorrectIndexes[cq]];
-                                feedback.style.color = "red";
-                            }
-                        }
-                        if (i === randomizedCorrectIndexes[cq]) {
-                            label.style.color = "green";
-                        }
-                    }
-                    document.getElementById("multiplechoice").appendChild(feedback);
-                }
-            } else {
-                const userAnswer = document.getElementById("answerblank").value.trim();
-                if (userAnswer !== "") {
+            for (let i = 0; i < 4; i++) {
+                if (document.getElementById(`answer${letters[i]}`).checked) {
                     checked = true;
-                    document.getElementById("a").classList.remove("hidden");
-                    document.getElementById("aa").innerHTML = answers[cq][correctanswers[cq]];
-                    const correctAnswer = answers[cq][correctanswers[cq]].toLowerCase();
-                    if (userAnswer.toLowerCase().includes(correctAnswer)) {
+                    const label = document.getElementById(`label${letters[i]}`);
+                    label.style.color = "#ff3333";
+                    if (i === randomizedCorrectIndexes[cq]) {
                         numcorrect++;
                         feedback.innerHTML = "Correct!";
                         feedback.style.color = "green";
-                        document.getElementById("answerblank").style.color = "green";
                     } else {
-                        feedback.innerHTML = "Incorrect. See the correct answer below.";
+                        feedback.innerHTML = `Incorrect. The correct answer is: ${randomizedAnswers[cq][randomizedCorrectIndexes[cq]]}`;
                         feedback.style.color = "red";
-                        document.getElementById("answerblank").style.color = "red";
                     }
-                    document.getElementById("shortanswer").appendChild(feedback);
+                    document.getElementById(`label${letters[randomizedCorrectIndexes[cq]]}`).style.color = "green";
+                    break;
                 }
             }
-            if (checked) {
-                document.getElementById("next").innerHTML = "Next";
-                document.getElementById("next").setAttribute("onclick", "next()");
-            } else {
-                alert("Please submit an answer.");
+            if (!checked) {
+                alert("Please select an answer.");
+                return;
             }
+            document.getElementById("multiplechoice").appendChild(feedback);
+            document.getElementById("next").innerHTML = "Next";
+            document.getElementById("next").setAttribute("onclick", "next()");
+            localStorage.setItem("nc", numcorrect);
         }
 
         function next() {
             window.scrollTo(0, 0);
             cq++;
-            if (cq === questions.length) {
+            localStorage.setItem("cq", cq);
+            if (cq >= questions.length) {
                 endgame();
             } else {
-                document.getElementById("questioncounter").innerHTML = `Question ${cq + 1}:`;
                 startOfGame();
                 resizeall();
             }
