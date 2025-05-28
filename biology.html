@@ -12,30 +12,32 @@
             margin-left: auto;
             margin-right: auto;
         }
-        #con {
-            background-color: #333;
-            color: white;
-            border-radius: 8px;
-            padding: 15px;
+        #question {
+            margin-top: 10px;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+        #questioncounter {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        #multiplechoice {
             margin-top: 20px;
         }
-        #aa {
-            font-weight: bold;
+        .radio-option {
+            margin: 10px 0;
         }
-        #a {
-            font-size: 1.5rem;
-            font-family: "Times New Roman", Times, serif;
-            margin-top: 10px;
+        .radio-label {
+            margin-left: 10px;
+            font-size: 1.2rem;
         }
-        #answerblank {
-            width: 100%;
-            height: 150px;
-            font-size: 1.5rem;
-            font-family: "Times New Roman", Times, serif;
-            resize: vertical;
-            margin-top: 10px;
+        #feedback {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            text-align: center;
         }
-        #return, #next {
+        #next, #return {
             text-align: center;
             font-size: 1.2rem;
             border-radius: 8px;
@@ -55,31 +57,6 @@
             right: 20px;
             width: 100px;
         }
-        #question {
-            margin-top: 10px;
-            font-size: 1.8rem;
-            text-align: center;
-        }
-        #questioncounter {
-            text-align: center;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-        .hidden {
-            display: none;
-        }
-        #feedback {
-            margin-top: 15px;
-            font-size: 1.2rem;
-            text-align: center;
-        }
-        .coursespan {
-            position: absolute;
-            transform: translate(-50%, -50%);
-            left: 50%;
-            top: 50%;
-            font-size: 1.2rem;
-        }
         .course {
             width: 150px;
             height: 50px;
@@ -93,19 +70,19 @@
             margin-top: 20px;
             left: 50%;
         }
+        .coursespan {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+            font-size: 1.2rem;
+        }
+        .hidden {
+            display: none;
+        }
         h1 {
             text-align: center;
             font-size: 2rem;
-        }
-        p {
-            text-align: center;
-        }
-        .radio-label {
-            margin-left: 10px;
-            font-size: 1.2rem;
-        }
-        .radio-option {
-            margin: 10px 0;
         }
     </style>
 </head>
@@ -113,7 +90,7 @@
     <p id="questioncounter">Question 1:</p>
     <h1 id="question"></h1>
     <div id="multiplechoice">
-        <form>
+        <form onsubmit="event.preventDefault();">
             <div class="radio-option">
                 <input name="answer" type="radio" id="answerA"><label class="radio-label" id="labelA" for="answerA">Answer A</label>
             </div>
@@ -130,7 +107,7 @@
     </div>
     <div id="next" onclick="check()">Check</div>
     <a href="https://jonnybooden.github.io/practiceexamwithhistory/" target="_blank"><div id="return">Return to Home</div></a>
-    <a href="diagram1.html"><div class="course hidden" id="diagramButton"><span class="coursespan">Diagram A</span></div></a>
+    <a id="diagramLink" href="#"><div class="course hidden" id="diagramButton"><span class="coursespan" id="diagramSpan">Diagram</span></div></a>
 
     <script>
         let questiontypes = Array(200).fill(1); // All questions are multiple-choice
@@ -214,7 +191,7 @@
             "Which process occurs directly after mitosis?",
             "What are cyclins?",
             "What are cyclin-dependent kinases?",
-            "What do carcinogens do for the cell cycle?",
+            "What do carcinogens do?",
             "What is a stem cell?",
             "What role does DNA play in cell differentiation?",
             "What is the genetic code for a specific trait?",
@@ -498,7 +475,7 @@
             ["Population growth outpaces resources", "Natural selection", "Uniformitarianism", "Gradualism"],
             ["Uniformitarianism", "Natural selection", "Population growth", "Catastrophism"],
             ["Adaptation to food sources", "Random mutation", "Genetic drift", "Gene flow"],
-            ["Variation exists", "Overproduction of offspring", "Constant population size", "Struggple for survival"],
+            ["Variation exists", "Overproduction of offspring", "Constant population size", "Struggle for survival"],
             ["Reproductive success", "Physical strength", "Survival rate", "Genetic diversity"],
             ["Survival, Reproduction", "Strength, Speed", "Mutation, Variation", "Adaptation, Selection"],
             ["Change in species over time", "Change in individual traits", "Change in environment", "Change in population size"],
@@ -561,7 +538,8 @@
             1, 2, 1, 2, 4, 2, 3, 4, 3, 1, 3, 1, 1, 4, 2, 2, 1, 2, 2, 1,
             1, 2, 3, 1, 1, 1, 4, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1,
             3, 4, 1, 1, 4, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 4, 4, 2, 1, 1, 3, 3, 1, 2, 1, 1, 1, 4, 1, 1,
+            1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 3, 3, 1, 2, 1, 1, 1, 4, 1, 1,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -609,9 +587,7 @@
             randomizedCorrectIndexes = [];
             for (let i = 0; i < questions.length; i++) {
                 let original = answers[i];
-                // Convert the 1-based correctanswer to a 0-based index
                 let correct = correctanswers[i] - 1;
-
                 let originalWithIndexes = original.map((ans, idx) => ({ ans, idx }));
                 let shuffled = shuffle(originalWithIndexes);
                 randomizedAnswers[i] = shuffled.map(obj => obj.ans);
@@ -631,15 +607,12 @@
 
         window.addEventListener("resize", resizeall);
 
-        // Initialize game state
         function initializeGame() {
-            // Check if there's a saved game state
             const savedIndices = localStorage.getItem("shuffledIndices");
             const savedCq = localStorage.getItem("cq");
             const savedNumCorrect = localStorage.getItem("nc");
 
             if (savedIndices && savedCq !== null) {
-                // Restore saved state
                 const indices = JSON.parse(savedIndices);
                 const newQuestions = [];
                 const newQuestionTypes = [];
@@ -659,7 +632,6 @@
                 cq = parseInt(savedCq);
                 numcorrect = parseInt(savedNumCorrect) || 0;
             } else {
-                // New game: shuffle questions and save indices
                 const shuffledIndices = shuffleQuestions();
                 localStorage.setItem("shuffledIndices", JSON.stringify(shuffledIndices));
                 localStorage.setItem("cq", cq);
@@ -674,7 +646,7 @@
 
         function startOfGame() {
             document.getElementById("questioncounter").innerHTML = `Question ${cq + 1}:`;
-            document.getElementById("question").innerHTML = questions[cq];
+            document.getElementById("question").innerHTML = `${cq + 1}. ${questions[cq]}`;
             updateButtonVisibility();
             document.getElementById("multiplechoice").classList.remove("hidden");
             for (let i = 0; i < 4; i++) {
@@ -690,23 +662,31 @@
 
         function updateButtonVisibility() {
             const diagramButton = document.getElementById("diagramButton");
+            const diagramLink = document.getElementById("diagramLink");
+            const diagramSpan = document.getElementById("diagramSpan");
             const nextButton = document.getElementById("next");
-            // Show diagram button for the question about Diagram B
-            if (questions[cq] === "Which parts of Diagram B are the active site, substrate, and product?") {
+
+            // Check if the current question contains "Diagram" and extract the label
+            const currentQuestion = questions[cq];
+            const diagramMatch = currentQuestion.match(/Diagram\s+([A-Z])/);
+            if (diagramMatch) {
+                const diagramLabel = diagramMatch[1]; // Extract the letter (e.g., "B", "E")
+                diagramLink.href = `diagram${diagramLabel}.html`;
+                diagramSpan.innerHTML = `Diagram ${diagramLabel}`;
                 diagramButton.classList.remove("hidden");
-                nextButton.style.display = "none";
             } else {
                 diagramButton.classList.add("hidden");
-                nextButton.style.display = "block";
             }
+            nextButton.style.display = "block"; // Always show Next button
         }
 
         function endgame() {
             localStorage.setItem("nc", numcorrect);
-            localStorage.setItem("tq", cq);
+            localStorage.setItem("totalQuestions", questions.length);
             localStorage.removeItem("shuffledIndices");
             localStorage.removeItem("cq");
-            window.location.href = "biologyresults.html";
+            localStorage.removeItem("nc");
+            window.location.href = "biologyResults.html";
         }
 
         function check() {
@@ -720,10 +700,10 @@
                     label.style.color = "#ff3333";
                     if (i === randomizedCorrectIndexes[cq]) {
                         numcorrect++;
-                        feedback.innerHTML = "Correct!";
+                        feedback.innerText = "Correct!";
                         feedback.style.color = "green";
                     } else {
-                        feedback.innerHTML = `Incorrect. The correct answer is: ${randomizedAnswers[cq][randomizedCorrectIndexes[cq]]}`;
+                        feedback.innerText = `Incorrect. The correct answer is: ${randomizedAnswers[cq][randomizedCorrectIndexes[cq]]}`;
                         feedback.style.color = "red";
                     }
                     document.getElementById(`label${letters[randomizedCorrectIndexes[cq]]}`).style.color = "green";
@@ -732,10 +712,11 @@
             }
             if (!checked) {
                 alert("Please select an answer.");
+                feedback.remove();
                 return;
             }
             document.getElementById("multiplechoice").appendChild(feedback);
-            document.getElementById("next").innerHTML = "Next";
+            document.getElementById("next").innerText = "Next";
             document.getElementById("next").setAttribute("onclick", "next()");
             localStorage.setItem("nc", numcorrect);
         }
