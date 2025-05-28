@@ -589,6 +589,52 @@ function prepareRandomizedAnswers() {
             document.getElementById("a").style.top = (document.getElementById("question").offsetHeight + document.getElementById("answerblank").offsetHeight + window.innerHeight * 0.06) + "px";
         }
 
+        function shuffle(array) {
+            let arr = array.slice();
+            for (let i = arr.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Store a randomized version of answers, and the correct index for each question
+        let randomizedAnswers = [];
+        let randomizedCorrectIndexes = [];
+
+        function prepareRandomizedAnswers() {
+            randomizedAnswers = [];
+            randomizedCorrectIndexes = [];
+            for (let i = 0; i < questions.length; i++) {
+                if (questiontypes[i] === 1) {
+                    let original = answers[i];
+                    let correct = correctanswers[i] - 1; // convert 1-based to 0-based
+                    let originalWithIndexes = original.map((ans, idx) => ({ ans, idx }));
+                    let shuffled = shuffle(originalWithIndexes);
+                    randomizedAnswers[i] = shuffled.map(obj => obj.ans);
+                    let newCorrectIdx = shuffled.findIndex(obj => obj.idx === correct);
+                    randomizedCorrectIndexes[i] = newCorrectIdx;
+                } else {
+                    randomizedAnswers[i] = answers[i];
+                    randomizedCorrectIndexes[i] = correctanswers[i] - 1;
+                }
+            }
+        }
+
+        let cq = 0;
+        let numcorrect = 0;
+        const letters = ["A", "B", "C", "D"];
+
+        resizeall();
+        window.addEventListener("resize", resizeall);
+        function resizeall() {
+            const width = Math.max(100, window.innerWidth - window.innerHeight * 0.025);
+            document.getElementById("answerblank").style.width = width + "px";
+            document.getElementById("answerblank").style.top = (document.getElementById("question").offsetHeight + window.innerHeight * 0.05) + "px";
+            document.getElementById("a").style.width = width + "px";
+            document.getElementById("a").style.top = (document.getElementById("question").offsetHeight + document.getElementById("answerblank").offsetHeight + window.innerHeight * 0.06) + "px";
+        }
+
         prepareRandomizedAnswers();
         startOfGame();
 
@@ -599,13 +645,21 @@ function prepareRandomizedAnswers() {
                 document.getElementById("multiplechoice").classList.remove("hidden");
                 document.getElementById("shortanswer").classList.add("hidden");
                 for (let i = 0; i < 4; i++) {
-                    document.getElementById("label" + letters[i]).innerHTML = answers[cq][i];
+                    document.getElementById("label" + letters[i]).innerHTML = randomizedAnswers[cq][i];
+                    document.getElementById("label" + letters[i]).style.color = "black";
+                    document.getElementById("answer" + letters[i]).checked = false;
                 }
             } else {
                 document.getElementById("shortanswer").classList.remove("hidden");
                 document.getElementById("multiplechoice").classList.add("hidden");
+                document.getElementById("answerblank").style.color = "black";
+                document.getElementById("a").classList.add("hidden");
                 document.getElementById("answerblank").value = "";
             }
+            let feedback = document.getElementById("feedback");
+            if (feedback) feedback.remove();
+            document.getElementById("next").innerHTML = "Check";
+            document.getElementById("next").setAttribute("onclick", `check()`);
         }
 
         function updateButtonVisibility() {
@@ -641,15 +695,15 @@ function prepareRandomizedAnswers() {
                         if (document.getElementById("answer" + letters[i]).checked) {
                             document.getElementById("label" + letters[i]).style.color = "#ff6600";
                         }
-                        if (i + 1 == correctanswers[cq]) {
+                        if (i === randomizedCorrectIndexes[cq]) {
                             document.getElementById("label" + letters[i]).style.color = "green";
                         }
-                        if (i + 1 == correctanswers[cq] && document.getElementById("answer" + letters[i]).checked) {
+                        if (i === randomizedCorrectIndexes[cq] && document.getElementById("answer" + letters[i]).checked) {
                             numcorrect++;
                             feedback.innerHTML = "Correct!";
                             feedback.style.color = "green";
-                        } else if (document.getElementById("answer" + letters[i]).checked) {
-                            feedback.innerHTML = "Incorrect. The correct answer is: " + answers[cq][correctanswers[cq] - 1];
+                        } else if (document.getElementById("answer" + letters[i]).checked && i !== randomizedCorrectIndexes[cq]) {
+                            feedback.innerHTML = "Incorrect. The correct answer is: " + randomizedAnswers[cq][randomizedCorrectIndexes[cq]];
                             feedback.style.color = "red";
                         }
                     }
@@ -690,27 +744,7 @@ function prepareRandomizedAnswers() {
                 endgame();
             } else {
                 document.getElementById("questioncounter").innerHTML = "Question " + (cq + 1).toString() + ":";
-                document.getElementById("question").innerHTML = questions[cq];
-                updateButtonVisibility();
-                if (questiontypes[cq] == 1) {
-                    document.getElementById("shortanswer").classList.add("hidden");
-                    document.getElementById("multiplechoice").classList.remove("hidden");
-                    for (let i = 0; i < 4; i++) {
-                        document.getElementById("label" + letters[i]).innerHTML = answers[cq][i];
-                        document.getElementById("label" + letters[i]).style.color = "black";
-                        document.getElementById("answer" + letters[i]).checked = false;
-                    }
-                } else {
-                    document.getElementById("multiplechoice").classList.add("hidden");
-                    document.getElementById("shortanswer").classList.remove("hidden");
-                    document.getElementById("answerblank").style.color = "black";
-                    document.getElementById("a").classList.add("hidden");
-                    document.getElementById("answerblank").value = "";
-                }
-                let feedback = document.getElementById("feedback");
-                if (feedback) feedback.remove();
-                document.getElementById("next").innerHTML = "Check";
-                document.getElementById("next").setAttribute("onclick", `check()`);
+                startOfGame();
                 resizeall();
             }
         }
