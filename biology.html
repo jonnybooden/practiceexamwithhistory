@@ -107,7 +107,7 @@
     </div>
     <div id="next" onclick="check()">Check</div>
     <a href="https://jonnybooden.github.io/practiceexamwithhistory/" target="_blank"><div id="return">Return to Home</div></a>
-    <a id="diagramLink" href="#"><div class="course hidden" id="diagramButton"><span class="coursespan" id="diagramSpan">Diagram</span></div></a>
+    <a id="diagramLink" href="diagramB.html"><div class="course hidden" id="diagramButton"><span class="coursespan" id="diagramSpan">Diagram</span></div></a>
 
     <script>
         let questiontypes = Array(200).fill(1); // All questions are multiple-choice
@@ -599,6 +599,24 @@
         let cq = 0;
         let numcorrect = 0;
         const letters = ["A", "B", "C", "D"];
+        const diagramQuestions = [
+            "Which parts of Diagram B are the active site, substrate, and product?",
+            "What are the percentages of each phenotype and genotype in Diagram E that could result?",
+            "What are the possible genotypes for individuals II-2, II-3, and III-1 in Diagram F?",
+            "What would the percentages of the possible genotypes and phenotypes be if you crossed a heterozygous A blood type with a heterozygous B blood type (use Diagram G)?",
+            "What does each symbol for each individual represent in Diagram H?",
+            "Using Diagram I, transcribe the sequence. Then take your new sequence and translate it. Then delete the first base of your mRNA transcription and translate it again in a different reading frame. What amino acids do the two mRNA strands translate to?",
+            "What color would the cloned sheep be according to Diagram J?",
+            "What is the recessive allele frequency in Diagram K?",
+            "What are the values of p and q in Diagram L?",
+            "What kind of selection is each graph in Diagram M?",
+            "Write the scientific name of the organism in Diagram N according to binomial nomenclature?",
+            "Do amphibians and birds share the trait for an amniotic egg according to Diagram O?",
+            "What are the characteristics of each biome using the picture provided in Diagram P?",
+            "Which of Diagram Q’s four food chains is correctly constructed?",
+            "Which of the two organisms in Diagram R is a specialist, and which is a generalist? What is the difference between these two terms?"
+        ];
+        const diagramLabels = ["B", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R"];
 
         function resizeall() {
             const width = Math.max(100, window.innerWidth - window.innerHeight * 0.05);
@@ -666,11 +684,9 @@
             const diagramSpan = document.getElementById("diagramSpan");
             const nextButton = document.getElementById("next");
 
-            // Check if the current question contains "Diagram" and extract the label
-            const currentQuestion = questions[cq];
-            const diagramMatch = currentQuestion.match(/Diagram\s+([A-Z])/);
-            if (diagramMatch) {
-                const diagramLabel = diagramMatch[1]; // Extract the letter (e.g., "B", "E")
+            if (diagramQuestions.includes(questions[cq])) {
+                const diagramIndex = diagramQuestions.indexOf(questions[cq]);
+                const diagramLabel = diagramLabels[diagramIndex];
                 diagramLink.href = `diagram${diagramLabel}.html`;
                 diagramSpan.innerHTML = `Diagram ${diagramLabel}`;
                 diagramButton.classList.remove("hidden");
