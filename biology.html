@@ -498,7 +498,7 @@
             ["Population growth outpaces resources", "Natural selection", "Uniformitarianism", "Gradualism"],
             ["Uniformitarianism", "Natural selection", "Population growth", "Catastrophism"],
             ["Adaptation to food sources", "Random mutation", "Genetic drift", "Gene flow"],
-            ["Variation exists", "Overproduction of offspring", "Constant population size", "Struggle for survival"],
+            ["Variation exists", "Overproduction of offspring", "Constant population size", "Struggple for survival"],
             ["Reproductive success", "Physical strength", "Survival rate", "Genetic diversity"],
             ["Survival, Reproduction", "Strength, Speed", "Mutation, Variation", "Adaptation, Selection"],
             ["Change in species over time", "Change in individual traits", "Change in environment", "Change in population size"],
@@ -557,18 +557,15 @@
             ["Prepares environment for other species", "Competes with other species", "Reduces biodiversity", "Increases competition"]
         ];
         let correctanswers = [
-       let correctanswers = [
-    3, 2, 1, 2, 1, 1, 4, 3, 4, 3, 2, 4, 1, 1, 2, 4, 1, 3, 2, 1,
-    1, 2, 1, 2, 4, 2, 3, 4, 3, 1, 3, 1, 1, 4, 2, 2, 1, 2, 2, 1,
-    1, 2, 3, 1, 1, 1, 4, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1,
-    3, 4, 1, 1, 4, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 4, 4, 2, 1, 1, 3, 3, 1, 2, 1, 1, 1, 4, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-];
-
+            3, 2, 1, 2, 1, 1, 4, 3, 4, 3, 2, 4, 1, 1, 2, 4, 1, 3, 2, 1,
+            1, 2, 1, 2, 4, 2, 3, 4, 3, 1, 3, 1, 1, 4, 2, 2, 1, 2, 2, 1,
+            1, 2, 3, 1, 1, 1, 4, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1,
+            3, 4, 1, 1, 4, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1, 4, 4, 2, 1, 1, 3, 3, 1, 2, 1, 1, 1, 4, 1, 1,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
         ];
 
         // Fisher-Yates shuffle helper
@@ -612,7 +609,9 @@
             randomizedCorrectIndexes = [];
             for (let i = 0; i < questions.length; i++) {
                 let original = answers[i];
-                let correct = correctanswers[i];
+                // Convert the 1-based correctanswer to a 0-based index
+                let correct = correctanswers[i] - 1;
+
                 let originalWithIndexes = original.map((ans, idx) => ({ ans, idx }));
                 let shuffled = shuffle(originalWithIndexes);
                 randomizedAnswers[i] = shuffled.map(obj => obj.ans);
